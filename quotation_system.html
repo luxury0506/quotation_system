@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>報價單產生系統</title>
+
+    <!-- 外掛樣式 -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- PDF 相關套件（跟原本一樣用 CDN） -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 頂部系統標題區 -->
+        <div class="header">
+            <h1>📋 報價單產生系統</h1>
+            <p>輕鬆建立專業報價單</p>
+        </div>
+        
+        <div class="content">
+            <!-- 客戶資訊 -->
+            <div class="form-section">
+                <h2>🏢 客戶資訊</h2>
+                <div class="form-group">
+                    <label for="customerName">客戶名稱</label>
+                    <input type="text" id="customerName" placeholder="例：力山科技股份有限公司">
+                </div>
+                <div class="form-group">
+                    <label for="contactPerson">聯絡人</label>
+                    <input type="text" id="contactPerson" placeholder="例：陳小姐">
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">電話</label>
+                    <input type="text" id="customerPhone" placeholder="例：04-24914141">
+                </div>
+                <div class="form-group">
+                    <label for="customerFax">傳真</label>
+                    <input type="text" id="customerFax" placeholder="例：04-24912042">
+                </div>
+            </div>
+            
+            <!-- 報價資訊 -->
+            <div class="form-section">
+                <h2>📅 報價資訊</h2>
+                <div class="form-group">
+                    <label for="quoteDate">報價日期</label>
+                    <input type="date" id="quoteDate">
+                </div>
+                <div class="form-group">
+                    <label for="quotePerson">報價人員</label>
+                    <input type="text" id="quotePerson" placeholder="例：業務部 王先生">
+                </div>
+                <div class="form-group">
+                    <label for="validDate">有效日期</label>
+                    <input type="date" id="validDate">
+                </div>
+            </div>
+            
+            <!-- 產品清單 -->
+            <div class="products-section">
+                <h2>📦 產品清單</h2>
+                
+                <!-- 產品選擇區 -->
+                <div class="product-select-panel">
+                    <h3>🛍️ 從產品庫選擇</h3>
+                    
+                    <!-- 分類篩選器 -->
+                    <div class="category-filter-bar">
+                        <span class="category-filter-label">📂 產品分類：</span>
+                        <button type="button" class="category-filter active" data-category="all" onclick="filterByCategory('all')">
+                            全部
+                        </button>
+                        <button type="button" class="category-filter" data-category="PVC-3" onclick="filterByCategory('PVC-3')">
+                            PVC-3
+                        </button>
+                        <button type="button" class="category-filter" data-category="PVC-6" onclick="filterByCategory('PVC-6')">
+                            PVC-6
+                        </button>                        
+                        <button type="button" class="category-filter" data-category="FSG-2" onclick="filterByCategory('FSG-2')">
+                            FSG-2
+                        </button>
+                        <button type="button" class="category-filter" data-category="FSG-3" onclick="filterByCategory('FSG-3')">
+                            FSG-3
+                        </button>
+                        <button type="button" class="category-filter" data-category="HST" onclick="filterByCategory('HST')">
+                            HST
+                        </button>
+                        <button type="button" class="category-filter" data-category="SRG-4" onclick="filterByCategory('SRG-4')">
+                            SRG-4
+                        </button>
+                        <button type="button" class="category-filter" data-category="SRG-7" onclick="filterByCategory('SRG-7')">
+                            SRG-7
+                        </button>
+                        <button type="button" class="category-filter" data-category="H" onclick="filterByCategory('H')">
+                            H
+                        </button>
+                        <button type="button" class="category-filter" data-category="GS" onclick="filterByCategory('GS')">
+                            GS
+                        </button>
+                    </div>
+
+                    <!-- 搜尋 -->
+                    <div class="product-search-wrapper">
+                        <input type="text" id="productSearch" placeholder="🔍 搜索產品編號或名稱..." oninput="searchProducts()">
+                    </div>
+                    
+                    <!-- 產品目錄 -->
+                    <div class="product-catalog-wrapper">
+                        <div id="productCatalog">
+                            <!-- 產品目錄由 JS 動態產生 -->
+                        </div>
+                    </div>
+
+                    <!-- 產品目錄操作按鈕 -->
+                    <div class="product-catalog-actions">
+                        <button type="button" class="btn btn-success" onclick="addSelectedProducts()">✅ 加入選中產品</button>
+                        <button type="button" class="btn btn-primary" onclick="selectAllProducts()">🔘 全選</button>
+                        <button type="button" class="btn btn-gray" onclick="clearAllProducts()">🔄 清除選擇</button>
+                        <span id="categoryInfo" class="category-info">顯示全部產品</span>
+                    </div>
+                </div>
+                
+                <!-- 已選產品列表 -->
+                <div id="productList">
+                    <!-- 已選產品項目將由 JS 動態產生 -->
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="addCustomProduct()">➕ 新增自訂產品</button>
+            </div>
+            
+            <!-- 預覽區域（會輸出成 PDF 的主體） -->
+            <div class="quotation-preview" id="quotationPreview">
+                
+                <!-- 公司標頭（LOGO + 公司名稱 + 報價單標題） -->
+                <div class="company-header">
+                    <!-- 🔴 左邊小紅色 Logo -->
+                    <img src="fig/logo.png" class="company-logo" alt="公司 Logo">
+                    <div class="company-title">
+                        <h1>成 富 企 業 有 限 公 司</h1>
+                        <h2>報　價　單</h2>
+                    </div>
+                </div>
+                </div>
+
+                <!-- 客戶 / 報價資訊表格 -->
+                <div class="quotation-info">
+                    <table class="info-table">
+                        <tr>
+                            <td><strong>客戶名稱：</strong></td>
+                            <td id="previewCustomerName">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>聯絡人：</strong></td>
+                            <td id="previewContactPerson">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>電話：</strong></td>
+                            <td id="previewCustomerPhone">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>傳真：</strong></td>
+                            <td id="previewCustomerFax">-</td>
+                        </tr>
+                    </table>
+                    
+                    <table class="info-table">
+                        <tr>
+                            <td><strong>報價日期：</strong></td>
+                            <td id="previewQuoteDate">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>報價人員：</strong></td>
+                            <td id="previewQuotePerson">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>有效日期：</strong></td>
+                            <td id="previewValidDate">-</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- 產品表格（輸出 PDF 用） -->
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>產品編號</th>
+                            <th>品名規格</th>
+                            <th>單位</th>
+                            <th>單價</th>
+                            <th>備註</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewProductList">
+                        <tr>
+                            <td colspan="5" class="no-product-row">
+                                請新增產品項目
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- 交易條件 -->
+                <div class="terms">
+                    <h3>📋 交易條件</h3>
+                    <ul>
+                        <li>付款方式：初次交易之新客戶請於出貨前匯款至「成富企業有限公司」</li>
+                        <li>銀行帳號：臺灣中小企業銀行 員林分行 帳號：55012111788</li>
+                        <li>交貨日期：下單後5個工作天（特殊品或非常用規格除外）</li>
+                        <li>每次出貨金額不足3000元，運費請自行負擔</li>
+                    </ul>
+                    <div class="company-contact">
+                        <p>彰化縣北斗鎮北斗科學工業區新工路42號</p>
+                        <p>電話：886-4-8886728　　傳真：886-4-8886729</p>
+                        <p>網址：http://www.chern-fwuh.com/　　信箱：taiwan@chern-fwuh.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 操作按鈕 -->
+            <div class="actions">
+                <button type="button" class="btn btn-success" onclick="generatePDF()">📄 產生 PDF 報價單</button>
+                <button type="button" class="btn btn-primary" onclick="loadPresetData()">📝 載入範例資料</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 功能 JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
