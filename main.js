@@ -366,6 +366,16 @@ function searchProducts() {
 }
 
 // =======================
+// 折數計算 （核心功能）
+// =======================
+function applyDiscount(price) {
+  const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
+  const p = parseFloat(price);
+  if (isNaN(p)) return price;  // 若沒有價格就不處理
+  return (p * rate).toFixed(2);
+}
+
+// =======================
 // 選取 / 新增產品到報價清單
 // =======================
 function selectAllProducts() {
@@ -387,7 +397,14 @@ function addSelectedProducts() {
   checkboxes.forEach(chk => {
     const idx = parseInt(chk.dataset.index, 10);
     const product = filteredProducts[idx];
-    if (product) addProductItem(product);
+
+    if (product) {
+      const discounted = {
+        ...product,
+        price: applyDiscount(product.price)
+      };
+      addProductItem(discounted);
+    }
   });
 
   clearAllProducts();
@@ -395,9 +412,16 @@ function addSelectedProducts() {
 }
 
 function addCustomProduct() {
-  addProductItem({ code: "", name: "", unit: "", price: "", note: "" });
+  addProductItem({
+    code: "",
+    name: "",
+    unit: "",
+    price: applyDiscount(0), // 你可以改成空字串
+    note: ""
+  });
   updatePreviewProducts();
 }
+
 
 // 建立一列可編輯的產品欄位
 function addProductItem(p) {
@@ -458,12 +482,13 @@ function updatePreviewProducts() {
       <td>${code || "&nbsp;"}</td>
       <td>${name || "&nbsp;"}</td>
       <td>${unit || "&nbsp;"}</td>
-      <td>${price || "&nbsp;"}</td>
+      <td>${price ? applyDiscount(price) : "&nbsp;"}</td>
       <td>${note || "&nbsp;"}</td>
     `;
     tbody.appendChild(tr);
   });
 }
+
 
 // =======================
 // 表單欄位 ↔ 預覽區同步
@@ -477,6 +502,21 @@ function setupEventListeners() {
     { inputId: "quotePerson", spanId: "previewQuotePerson" },
     { inputId: "quotePerson", spanId: "previewQuotePersonFooter" }, // 簽章區承辦業務
   ];
+
+  function applyDiscount(price) {
+  const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
+  const p = parseFloat(price);
+  if (isNaN(rate) || isNaN(p)) return price;
+  return (p * rate).toFixed(2);
+}
+
+
+  const discount = document.getElementById("discountRate");
+    if (discount) {
+    discount.addEventListener("input", () => {
+        updatePreviewProducts();
+    });
+    }
 
   mapping.forEach(m => {
     const input = document.getElementById(m.inputId);
@@ -604,3 +644,4 @@ function generatePDF() {
 function printQuotation() {
   window.print();
 }
+

@@ -58,11 +58,17 @@
                     <input type="date" id="validDate">
                 </div>
             </div>
-            
+
+
             <!-- 產品清單 -->
             <div class="products-section">
                 <h2>📦 產品清單</h2>
-                
+
+            <div class="form-section">
+                <label for="discountRate">折數（例如 0.95）</label>
+                <input type="number" id="discountRate" step="0.01" min="0" max="1" value="1">
+            </div>
+
                 <!-- 產品選擇區 -->
                 <div class="product-select-panel">
                     <h3>🛍️ 從產品庫選擇</h3>
@@ -134,16 +140,14 @@
             <!-- 預覽區域（會輸出成 PDF 的主體） -->
             <div class="quotation-preview" id="quotationPreview">
                 
-                <!-- 公司標頭（LOGO + 公司名稱 + 報價單標題） -->
-                <div class="company-header">
-                    <!-- 🔴 左邊小紅色 Logo -->
-                    <img src="fig/logo.png" class="company-logo" alt="公司 Logo">
-                    <div class="company-title">
-                        <h1>成 富 企 業 有 限 公 司</h1>
-                        <h2>報　價　單</h2>
+                <!-- 公司標頭 -->
+                    <div class="company-header">
+                        <img src="fig/logo.png" class="company-logo">
+                        <div class="company-title">
+                            <h1>成 富 企 業 有 限 公 司</h1>
+                            <h2>報　價　單</h2>
+                        </div>
                     </div>
-                </div>
-                </div>
 
                 <!-- 客戶 / 報價資訊表格 -->
                 <div class="quotation-info">
