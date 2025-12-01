@@ -117,7 +117,7 @@
                 { code: 'HST-09',  name: '玻璃纖維細橡膠套管 8KV 9.0mm',  unit: 'M', price: '38',   note: '100M/捲', category: 'HST' },
                 { code: 'HST-10',  name: '玻璃纖維細橡膠套管 8KV 10.0mm', unit: 'M', price: '42',   note: '100M/捲', category: 'HST' },
 
-            
+        
             // GS 熱定型套管
             { code: 'GS-01', name: '熱定型套管 1.0mm', unit: 'M', price: '', note: '100M/捲', category: 'GS' },
             { code: 'GS-015', name: '熱定型套管 1.5mm', unit: 'M', price: '', note: '100M/捲', category: 'GS' },
@@ -187,72 +187,270 @@
                 { code: 'SR-10',  name: '矽橡膠套管 10.0mm', unit: 'M', price: '30',  note: '100M/捲', category: 'SR' },
 
             
-            // H 通用型熱收縮套管
-            { code: 'H-008', name: '通用型熱收縮套管 0.8mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-01', name: '通用型熱收縮套管 1.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-015', name: '通用型熱收縮套管 1.5mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-02', name: '通用型熱收縮套管 2.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-025', name: '通用型熱收縮套管 2.5mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-03', name: '通用型熱收縮套管 3.2mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-035', name: '通用型熱收縮套管 3.2mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-04', name: '通用型熱收縮套管 4.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-045', name: '通用型熱收縮套管 4.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-05', name: '通用型熱收縮套管 5.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-06', name: '通用型熱收縮套管 6.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-07', name: '通用型熱收縮套管 7.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
-            { code: 'H-08', name: '通用型熱收縮套管 8.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-09', name: '通用型熱收縮套管 9.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-10', name: '通用型熱收縮套管 10.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-11', name: '通用型熱收縮套管 11.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-12', name: '通用型熱收縮套管 12.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-13', name: '通用型熱收縮套管 13.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-14', name: '通用型熱收縮套管 14.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-15', name: '通用型熱收縮套管 15.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-16', name: '通用型熱收縮套管 16.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-17', name: '通用型熱收縮套管 17.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-18', name: '通用型熱收縮套管 18.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-19', name: '通用型熱收縮套管 19.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-20', name: '通用型熱收縮套管 20.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-21', name: '通用型熱收縮套管 21.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-22', name: '通用型熱收縮套管 22.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-23', name: '通用型熱收縮套管 23.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-24', name: '通用型熱收縮套管 24.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-25', name: '通用型熱收縮套管 25.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-26', name: '通用型熱收縮套管 26.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-27', name: '通用型熱收縮套管 27.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-28', name: '通用型熱收縮套管 28.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-29', name: '通用型熱收縮套管 29.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-30', name: '通用型熱收縮套管 30.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            
-            // AIS 雙璧含膠型熱收縮套管
-            { code: 'AIS-32', name: '雙璧含膠型熱收縮套管 3.2mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-40', name: '雙璧含膠型熱收縮套管 4.0mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-48', name: '雙璧含膠型熱收縮套管 4.8mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-64', name: '雙璧含膠型熱收縮套管 6.4mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-80', name: '雙璧含膠型熱收縮套管 8.0mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-95', name: '雙璧含膠型熱收縮套管 9.5mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-127', name: '雙璧含膠型熱收縮套管 12.7mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-160', name: '雙璧含膠型熱收縮套管 16.0mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-190', name: '雙璧含膠型熱收縮套管 19.0mm', unit: 'M', price: '', note: '100M/捲', category: 'AIS' },
-            { code: 'AIS-254', name: '雙璧含膠型熱收縮套管 25.4mm', unit: 'M', price: '', note: '50M/捲', category: 'AIS' },
-            { code: 'AIS-320', name: '雙璧含膠型熱收縮套管 32.0mm', unit: 'M', price: '', note: '50M/捲', category: 'AIS' },
-            { code: 'AIS-381', name: '雙璧含膠型熱收縮套管 38.1mm', unit: 'M', price: '', note: '50M/捲', category: 'AIS' },
-            { code: 'AIS-508', name: '雙璧含膠型熱收縮套管 50.8mm', unit: 'M', price: '', note: '25M/捲', category: 'AIS' },
-            
-            // PET 編織擴充管
-            { code: 'PET-32', name: '編織擴充管 3.2mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-40', name: '編織擴充管 4.0mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-48', name: '編織擴充管 4.8mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-64', name: '編織擴充管 6.4mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-80', name: '編織擴充管 8.0mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-95', name: '編織擴充管 9.5mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-127', name: '編織擴充管 12.7mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-160', name: '編織擴充管 16.0mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-190', name: '編織擴充管 19.0mm', unit: 'M', price: '', note: '100M/捲', category: 'PET' },
-            { code: 'PET-254', name: '編織擴充管 25.4mm', unit: 'M', price: '', note: '50M/捲', category: 'PET' },
-            { code: 'PET-320', name: '編織擴充管 32.0mm', unit: 'M', price: '', note: '50M/捲', category: 'PET' },
-            { code: 'PET-381', name: '編織擴充管 38.1mm', unit: 'M', price: '', note: '50M/捲', category: 'PET' },
-            { code: 'PET-508', name: '編織擴充管 50.8mm', unit: 'M', price: '', note: '25M/捲', category: 'PET' },
+                // H 通用型熱收縮套管（依進價，品號已調整）
+                { code: 'H008',   name: '通用型熱收縮套管 0.8mm',   unit: 'M', price: '1.11',  note: '', category: 'H' },
+                { code: 'H01',    name: '通用型熱收縮套管 1.0mm',   unit: 'M', price: '0.72',  note: '', category: 'H' },
+                { code: 'H015',   name: '通用型熱收縮套管 1.5mm',   unit: 'M', price: '0.81',  note: '', category: 'H' },
+                { code: 'H02',    name: '通用型熱收縮套管 2.0mm',   unit: 'M', price: '0.87',  note: '', category: 'H' },
+                { code: 'H025',   name: '通用型熱收縮套管 2.5mm',   unit: 'M', price: '0.95',  note: '', category: 'H' },
+                { code: 'H03',    name: '通用型熱收縮套管 3.0mm',   unit: 'M', price: '1.03',  note: '', category: 'H' },
+                { code: 'H035',   name: '通用型熱收縮套管 3.5mm',   unit: 'M', price: '1.19',  note: '', category: 'H' },
+                { code: 'H04',    name: '通用型熱收縮套管 4.0mm',   unit: 'M', price: '1.35',  note: '', category: 'H' },
+                { code: 'H045',   name: '通用型熱收縮套管 4.5mm',   unit: 'M', price: '1.43',  note: '', category: 'H' },
+                { code: 'H05',    name: '通用型熱收縮套管 5.0mm',   unit: 'M', price: '1.75',  note: '', category: 'H' },
+                { code: 'H06',    name: '通用型熱收縮套管 6.0mm',   unit: 'M', price: '1.99',  note: '', category: 'H' },
+                { code: 'H07',    name: '通用型熱收縮套管 7.0mm',   unit: 'M', price: '2.31',  note: '', category: 'H' },
+                { code: 'H08',    name: '通用型熱收縮套管 8.0mm',   unit: 'M', price: '2.62',  note: '', category: 'H' },
+                { code: 'H09',    name: '通用型熱收縮套管 9.0mm',   unit: 'M', price: '2.78',  note: '', category: 'H' },
+                { code: 'H10',    name: '通用型熱收縮套管 10.0mm',  unit: 'M', price: '3.02',  note: '', category: 'H' },
+                { code: 'H11',    name: '通用型熱收縮套管 11.0mm',  unit: 'M', price: '3.34',  note: '', category: 'H' },
+                { code: 'H12',    name: '通用型熱收縮套管 12.0mm',  unit: 'M', price: '3.58',  note: '', category: 'H' },
+                { code: 'H13',    name: '通用型熱收縮套管 13.0mm',  unit: 'M', price: '4.13',  note: '', category: 'H' },
+                { code: 'H14',    name: '通用型熱收縮套管 14.0mm',  unit: 'M', price: '4.45',  note: '', category: 'H' },
+                { code: 'H15',    name: '通用型熱收縮套管 15.0mm',  unit: 'M', price: '4.85',  note: '', category: 'H' },
+                { code: 'H16',    name: '通用型熱收縮套管 16.0mm',  unit: 'M', price: '5.49',  note: '', category: 'H' },
+                { code: 'H17',    name: '通用型熱收縮套管 17.0mm',  unit: 'M', price: '6.52',  note: '', category: 'H' },
+                { code: 'H18',    name: '通用型熱收縮套管 18.0mm',  unit: 'M', price: '6.76',  note: '', category: 'H' },
+                { code: 'H20',    name: '通用型熱收縮套管 20.0mm',  unit: 'M', price: '8.19',  note: '', category: 'H' },
+                { code: 'H22',    name: '通用型熱收縮套管 22.0mm',  unit: 'M', price: '9.54',  note: '', category: 'H' },
+                { code: 'H25',    name: '通用型熱收縮套管 25.0mm',  unit: 'M', price: '11.13', note: '', category: 'H' },
+                { code: 'H28',    name: '通用型熱收縮套管 28.0mm',  unit: 'M', price: '13.52', note: '', category: 'H' },
+                { code: 'H30',    name: '通用型熱收縮套管 30.0mm',  unit: 'M', price: '14.15', note: '', category: 'H' },
+                { code: 'H35',    name: '通用型熱收縮套管 35.0mm',  unit: 'M', price: '19.88', note: '', category: 'H' },
+                { code: 'H40',    name: '通用型熱收縮套管 40.0mm',  unit: 'M', price: '25.84', note: '', category: 'H' },
+                { code: 'H45',    name: '通用型熱收縮套管 45.0mm',  unit: 'M', price: '28.54', note: '', category: 'H' },
+                { code: 'H50',    name: '通用型熱收縮套管 50.0mm',  unit: 'M', price: '28.46', note: '', category: 'H' },
+                { code: 'H60',    name: '通用型熱收縮套管 60.0mm',  unit: 'M', price: '41.02', note: '', category: 'H' },
+                { code: 'H70',    name: '通用型熱收縮套管 70.0mm',  unit: 'M', price: '50.48', note: '', category: 'H' },
+                { code: 'H80',    name: '通用型熱收縮套管 80.0mm',  unit: 'M', price: '57.64', note: '', category: 'H' },
+                { code: 'H90',    name: '通用型熱收縮套管 90.0mm',  unit: 'M', price: '68.77', note: '', category: 'H' },
+                { code: 'H100',   name: '通用型熱收縮套管 100.0mm', unit: 'M', price: '81.73', note: '', category: 'H' },
+                { code: 'H120',   name: '通用型熱收縮套管 120.0mm', unit: 'M', price: '102',   note: '', category: 'H' },
+                { code: 'H150',   name: '通用型熱收縮套管 150.0mm', unit: 'M', price: '141.51',note: '', category: 'H' },
+                { code: 'H180',   name: '通用型熱收縮套管 180.0mm', unit: 'M', price: '194.78',note: '', category: 'H' },
+
+
+                 // CB 超薄型熱收縮套管（依你提供進價）
+                { code: 'H008CB',  name: '超薄熱縮套管 0.8mm',  unit: 'M', price: '1.11', note: '', category: 'CB' },
+                { code: 'H01CB',   name: '超薄熱縮套管 1.0mm',  unit: 'M', price: '1.01', note: '', category: 'CB' },
+                { code: 'H015CB',  name: '超薄熱縮套管 1.5mm',  unit: 'M', price: '1.09', note: '', category: 'CB' },
+                { code: 'H02CB',   name: '超薄熱縮套管 2.0mm',  unit: 'M', price: '1.34', note: '', category: 'CB' },
+                { code: 'H025CB',  name: '超薄熱縮套管 2.5mm',  unit: 'M', price: '0.95', note: '', category: 'CB' },
+                { code: 'H03CB',   name: '超薄熱縮套管 3.0mm',  unit: 'M', price: '1.03', note: '', category: 'CB' },
+                { code: 'H035CB',  name: '超薄熱縮套管 3.5mm',  unit: 'M', price: '1.19', note: '', category: 'CB' },
+                { code: 'H04CB',   name: '超薄熱縮套管 4.0mm',  unit: 'M', price: '1.35', note: '', category: 'CB' },
+                { code: 'H045CB',  name: '超薄熱縮套管 4.5mm',  unit: 'M', price: '1.43', note: '', category: 'CB' },
+                { code: 'H05CB',   name: '超薄熱縮套管 5.0mm',  unit: 'M', price: '1.75', note: '', category: 'CB' },
+                { code: 'H06CB',   name: '超薄熱縮套管 6.0mm',  unit: 'M', price: '1.99', note: '', category: 'CB' },
+                { code: 'H07CB',   name: '超薄熱縮套管 7.0mm',  unit: 'M', price: '2.31', note: '', category: 'CB' },
+                { code: 'H08CB',   name: '超薄熱縮套管 8.0mm',  unit: 'M', price: '2.62', note: '', category: 'CB' },
+                { code: 'H09CB',   name: '超薄熱縮套管 9.0mm',  unit: 'M', price: '2.78', note: '', category: 'CB' },
+                { code: 'H10CB',   name: '超薄熱縮套管 10.0mm', unit: 'M', price: '3.02', note: '', category: 'CB' },
+                { code: 'H11CB',   name: '超薄熱縮套管 11.0mm', unit: 'M', price: '3.34', note: '', category: 'CB' },
+                { code: 'H12CB',   name: '超薄熱縮套管 12.0mm', unit: 'M', price: '3.58', note: '', category: 'CB' },
+                { code: 'H13CB',   name: '超薄熱縮套管 13.0mm', unit: 'M', price: '4.13', note: '', category: 'CB' },
+                { code: 'H14CB',   name: '超薄熱縮套管 14.0mm', unit: 'M', price: '4.45', note: '', category: 'CB' },
+                { code: 'H15CB',   name: '超薄熱縮套管 15.0mm', unit: 'M', price: '4.85', note: '', category: 'CB' },
+                { code: 'H16CB',   name: '超薄熱縮套管 16.0mm', unit: 'M', price: '5.49', note: '', category: 'CB' },
+
+                // H 透明通用型熱收縮套管（使用進價作為單價）
+                { code: 'H01C',   name: '透明通用型熱收縮套管 1.0mm',   unit: 'M', price: '0.86',  note: '', category: 'H' },
+                { code: 'H015C',  name: '透明通用型熱收縮套管 1.5mm',   unit: 'M', price: '0.93',  note: '', category: 'H' },
+                { code: 'H02C',   name: '透明通用型熱收縮套管 2.0mm',   unit: 'M', price: '0.86',  note: '', category: 'H' },
+                { code: 'H025C',  name: '透明通用型熱收縮套管 2.5mm',   unit: 'M', price: '1.01',  note: '', category: 'H' },
+                { code: 'H03C',   name: '透明通用型熱收縮套管 3.0mm',   unit: 'M', price: '1.09',  note: '', category: 'H' },
+                { code: 'H035C',  name: '透明通用型熱收縮套管 3.5mm',   unit: 'M', price: '1.24',  note: '', category: 'H' },
+                { code: 'H04C',   name: '透明通用型熱收縮套管 4.0mm',   unit: 'M', price: '1.40',  note: '', category: 'H' },
+                { code: 'H045C',  name: '透明通用型熱收縮套管 4.5mm',   unit: 'M', price: '1.48',  note: '', category: 'H' },
+                { code: 'H05C',   name: '透明通用型熱收縮套管 5.0mm',   unit: 'M', price: '1.79',  note: '', category: 'H' },
+                { code: 'H06C',   name: '透明通用型熱收縮套管 6.0mm',   unit: 'M', price: '2.10',  note: '', category: 'H' },
+                { code: 'H07C',   name: '透明通用型熱收縮套管 7.0mm',   unit: 'M', price: '2.41',  note: '', category: 'H' },
+                { code: 'H08C',   name: '透明通用型熱收縮套管 8.0mm',   unit: 'M', price: '2.72',  note: '', category: 'H' },
+                { code: 'H09C',   name: '透明通用型熱收縮套管 9.0mm',   unit: 'M', price: '2.88',  note: '', category: 'H' },
+                { code: 'H10C',   name: '透明通用型熱收縮套管 10.0mm',  unit: 'M', price: '3.11',  note: '', category: 'H' },
+                { code: 'H11C',   name: '透明通用型熱收縮套管 11.0mm',  unit: 'M', price: '3.42',  note: '', category: 'H' },
+                { code: 'H12C',   name: '透明通用型熱收縮套管 12.0mm',  unit: 'M', price: '3.73',  note: '', category: 'H' },
+                { code: 'H13C',   name: '透明通用型熱收縮套管 13.0mm',  unit: 'M', price: '4.35',  note: '', category: 'H' },
+                { code: 'H14C',   name: '透明通用型熱收縮套管 14.0mm',  unit: 'M', price: '4.47',  note: '', category: 'H' },
+                { code: 'H15C',   name: '透明通用型熱收縮套管 15.0mm',  unit: 'M', price: '5.05',  note: '', category: 'H' },
+                { code: 'H16C',   name: '透明通用型熱收縮套管 16.0mm',  unit: 'M', price: '5.60',  note: '', category: 'H' },
+                { code: 'H17C',   name: '透明通用型熱收縮套管 17.0mm',  unit: 'M', price: '6.38',  note: '', category: 'H' },
+                { code: 'H18C',   name: '透明通用型熱收縮套管 18.0mm',  unit: 'M', price: '7.00',  note: '', category: 'H' },
+                { code: 'H20C',   name: '透明通用型熱收縮套管 20.0mm',  unit: 'M', price: '8.24',  note: '', category: 'H' },
+                { code: 'H22C',   name: '透明通用型熱收縮套管 22.0mm',  unit: 'M', price: '9.95',  note: '', category: 'H' },
+                { code: 'H25C',   name: '透明通用型熱收縮套管 25.0mm',  unit: 'M', price: '11.04', note: '', category: 'H' },
+                { code: 'H28C',   name: '透明通用型熱收縮套管 28.0mm',  unit: 'M', price: '14.46', note: '', category: 'H' },
+                { code: 'H30C',   name: '透明通用型熱收縮套管 30.0mm',  unit: 'M', price: '14.77', note: '', category: 'H' },
+                { code: 'H35C',   name: '透明通用型熱收縮套管 35.0mm',  unit: 'M', price: '21.00', note: '', category: 'H' },
+                { code: 'H40C',   name: '透明通用型熱收縮套管 40.0mm',  unit: 'M', price: '24.26', note: '', category: 'H' },
+                { code: 'H50C',   name: '透明通用型熱收縮套管 50.0mm',  unit: 'M', price: '27.99', note: '', category: 'H' },
+                { code: 'H60C',   name: '透明通用型熱收縮套管 60.0mm',  unit: 'M', price: '39.81', note: '', category: 'H' },
+
+                // H 彩色通用型熱收縮套管（0.8mm～16mm，紅R／黃Y／綠G／藍BL，同價）
+
+                // 0.8mm price: 1.35
+                { code: 'H008R',  name: '彩色通用型熱收縮套管 0.8mm (紅)', unit: 'M', price: '1.35', note: '', category: 'H' },
+                { code: 'H008Y',  name: '彩色通用型熱收縮套管 0.8mm (黃)', unit: 'M', price: '1.35', note: '', category: 'H' },
+                { code: 'H008G',  name: '彩色通用型熱收縮套管 0.8mm (綠)', unit: 'M', price: '1.35', note: '', category: 'H' },
+                { code: 'H008BL', name: '彩色通用型熱收縮套管 0.8mm (藍)', unit: 'M', price: '1.35', note: '', category: 'H' },
+                
+                // 1.0mm price: 0.87
+                { code: 'H01R',   name: '彩色通用型熱收縮套管 1.0mm (紅)', unit: 'M', price: '0.87', note: '', category: 'H' },
+                { code: 'H01Y',   name: '彩色通用型熱收縮套管 1.0mm (黃)', unit: 'M', price: '0.87', note: '', category: 'H' },
+                { code: 'H01G',   name: '彩色通用型熱收縮套管 1.0mm (綠)', unit: 'M', price: '0.87', note: '', category: 'H' },
+                { code: 'H01BL',  name: '彩色通用型熱收縮套管 1.0mm (藍)', unit: 'M', price: '0.87', note: '', category: 'H' },
+                
+                // 1.5mm price: 0.95
+                { code: 'H015R',  name: '彩色通用型熱收縮套管 1.5mm (紅)', unit: 'M', price: '0.95', note: '', category: 'H' },
+                { code: 'H015Y',  name: '彩色通用型熱收縮套管 1.5mm (黃)', unit: 'M', price: '0.95', note: '', category: 'H' },
+                { code: 'H015G',  name: '彩色通用型熱收縮套管 1.5mm (綠)', unit: 'M', price: '0.95', note: '', category: 'H' },
+                { code: 'H015BL', name: '彩色通用型熱收縮套管 1.5mm (藍)', unit: 'M', price: '0.95', note: '', category: 'H' },
+                
+                // 2.0mm price: 1.02
+                { code: 'H02R',   name: '彩色通用型熱收縮套管 2.0mm (紅)', unit: 'M', price: '1.02', note: '', category: 'H' },
+                { code: 'H02Y',   name: '彩色通用型熱收縮套管 2.0mm (黃)', unit: 'M', price: '1.02', note: '', category: 'H' },
+                { code: 'H02G',   name: '彩色通用型熱收縮套管 2.0mm (綠)', unit: 'M', price: '1.02', note: '', category: 'H' },
+                { code: 'H02BL',  name: '彩色通用型熱收縮套管 2.0mm (藍)', unit: 'M', price: '1.02', note: '', category: 'H' },
+                
+                // 2.5mm price: 1.17
+                { code: 'H025R',  name: '彩色通用型熱收縮套管 2.5mm (紅)', unit: 'M', price: '1.17', note: '', category: 'H' },
+                { code: 'H025Y',  name: '彩色通用型熱收縮套管 2.5mm (黃)', unit: 'M', price: '1.17', note: '', category: 'H' },
+                { code: 'H025G',  name: '彩色通用型熱收縮套管 2.5mm (綠)', unit: 'M', price: '1.17', note: '', category: 'H' },
+                { code: 'H025BL', name: '彩色通用型熱收縮套管 2.5mm (藍)', unit: 'M', price: '1.17', note: '', category: 'H' },
+                
+                // 3.0mm price: 1.33
+                { code: 'H03R',   name: '彩色通用型熱收縮套管 3.0mm (紅)', unit: 'M', price: '1.33', note: '', category: 'H' },
+                { code: 'H03Y',   name: '彩色通用型熱收縮套管 3.0mm (黃)', unit: 'M', price: '1.33', note: '', category: 'H' },
+                { code: 'H03G',   name: '彩色通用型熱收縮套管 3.0mm (綠)', unit: 'M', price: '1.33', note: '', category: 'H' },
+                { code: 'H03BL',  name: '彩色通用型熱收縮套管 3.0mm (藍)', unit: 'M', price: '1.33', note: '', category: 'H' },
+                
+                // 3.5mm price: 1.60
+                { code: 'H035R',  name: '彩色通用型熱收縮套管 3.5mm (紅)', unit: 'M', price: '1.60', note: '', category: 'H' },
+                { code: 'H035Y',  name: '彩色通用型熱收縮套管 3.5mm (黃)', unit: 'M', price: '1.60', note: '', category: 'H' },
+                { code: 'H035G',  name: '彩色通用型熱收縮套管 3.5mm (綠)', unit: 'M', price: '1.60', note: '', category: 'H' },
+                { code: 'H035BL', name: '彩色通用型熱收縮套管 3.5mm (藍)', unit: 'M', price: '1.60', note: '', category: 'H' },
+                
+                // 4.0mm price: 1.71
+                { code: 'H04R',   name: '彩色通用型熱收縮套管 4.0mm (紅)', unit: 'M', price: '1.71', note: '', category: 'H' },
+                { code: 'H04Y',   name: '彩色通用型熱收縮套管 4.0mm (黃)', unit: 'M', price: '1.71', note: '', category: 'H' },
+                { code: 'H04G',   name: '彩色通用型熱收縮套管 4.0mm (綠)', unit: 'M', price: '1.71', note: '', category: 'H' },
+                { code: 'H04BL',  name: '彩色通用型熱收縮套管 4.0mm (藍)', unit: 'M', price: '1.71', note: '', category: 'H' },
+                
+                // 4.5mm price: 1.86
+                { code: 'H045R',  name: '彩色通用型熱收縮套管 4.5mm (紅)', unit: 'M', price: '1.86', note: '', category: 'H' },
+                { code: 'H045Y',  name: '彩色通用型熱收縮套管 4.5mm (黃)', unit: 'M', price: '1.86', note: '', category: 'H' },
+                { code: 'H045G',  name: '彩色通用型熱收縮套管 4.5mm (綠)', unit: 'M', price: '1.86', note: '', category: 'H' },
+                { code: 'H045BL', name: '彩色通用型熱收縮套管 4.5mm (藍)', unit: 'M', price: '1.86', note: '', category: 'H' },
+                
+                // 5.0mm price: 2.23
+                { code: 'H05R',   name: '彩色通用型熱收縮套管 5.0mm (紅)', unit: 'M', price: '2.23', note: '', category: 'H' },
+                { code: 'H05Y',   name: '彩色通用型熱收縮套管 5.0mm (黃)', unit: 'M', price: '2.23', note: '', category: 'H' },
+                { code: 'H05G',   name: '彩色通用型熱收縮套管 5.0mm (綠)', unit: 'M', price: '2.23', note: '', category: 'H' },
+                { code: 'H05BL',  name: '彩色通用型熱收縮套管 5.0mm (藍)', unit: 'M', price: '2.23', note: '', category: 'H' },
+                
+                // 6.0mm price: 2.73
+                { code: 'H06R',   name: '彩色通用型熱收縮套管 6.0mm (紅)', unit: 'M', price: '2.73', note: '', category: 'H' },
+                { code: 'H06Y',   name: '彩色通用型熱收縮套管 6.0mm (黃)', unit: 'M', price: '2.73', note: '', category: 'H' },
+                { code: 'H06G',   name: '彩色通用型熱收縮套管 6.0mm (綠)', unit: 'M', price: '2.73', note: '', category: 'H' },
+                { code: 'H06BL',  name: '彩色通用型熱收縮套管 6.0mm (藍)', unit: 'M', price: '2.73', note: '', category: 'H' },
+                
+                // 7.0mm price: 3.21
+                { code: 'H07R',   name: '彩色通用型熱收縮套管 7.0mm (紅)', unit: 'M', price: '3.21', note: '', category: 'H' },
+                { code: 'H07Y',   name: '彩色通用型熱收縮套管 7.0mm (黃)', unit: 'M', price: '3.21', note: '', category: 'H' },
+                { code: 'H07G',   name: '彩色通用型熱收縮套管 7.0mm (綠)', unit: 'M', price: '3.21', note: '', category: 'H' },
+                { code: 'H07BL',  name: '彩色通用型熱收縮套管 7.0mm (藍)', unit: 'M', price: '3.21', note: '', category: 'H' },
+                
+                // 8.0mm price: 3.48
+                { code: 'H08R',   name: '彩色通用型熱收縮套管 8.0mm (紅)', unit: 'M', price: '3.48', note: '', category: 'H' },
+                { code: 'H08Y',   name: '彩色通用型熱收縮套管 8.0mm (黃)', unit: 'M', price: '3.48', note: '', category: 'H' },
+                { code: 'H08G',   name: '彩色通用型熱收縮套管 8.0mm (綠)', unit: 'M', price: '3.48', note: '', category: 'H' },
+                { code: 'H08BL',  name: '彩色通用型熱收縮套管 8.0mm (藍)', unit: 'M', price: '3.48', note: '', category: 'H' },
+                
+                // 9.0mm price: 3.71
+                { code: 'H09R',   name: '彩色通用型熱收縮套管 9.0mm (紅)', unit: 'M', price: '3.71', note: '', category: 'H' },
+                { code: 'H09Y',   name: '彩色通用型熱收縮套管 9.0mm (黃)', unit: 'M', price: '3.71', note: '', category: 'H' },
+                { code: 'H09G',   name: '彩色通用型熱收縮套管 9.0mm (綠)', unit: 'M', price: '3.71', note: '', category: 'H' },
+                { code: 'H09BL',  name: '彩色通用型熱收縮套管 9.0mm (藍)', unit: 'M', price: '3.71', note: '', category: 'H' },
+                
+                // 10.0mm price: 4.09
+                { code: 'H10R',   name: '彩色通用型熱收縮套管 10.0mm (紅)', unit: 'M', price: '4.09', note: '', category: 'H' },
+                { code: 'H10Y',   name: '彩色通用型熱收縮套管 10.0mm (黃)', unit: 'M', price: '4.09', note: '', category: 'H' },
+                { code: 'H10G',   name: '彩色通用型熱收縮套管 10.0mm (綠)', unit: 'M', price: '4.09', note: '', category: 'H' },
+                { code: 'H10BL',  name: '彩色通用型熱收縮套管 10.0mm (藍)', unit: 'M', price: '4.09', note: '', category: 'H' },
+                
+                // 11.0mm price: 4.35
+                { code: 'H11R',   name: '彩色通用型熱收縮套管 11.0mm (紅)', unit: 'M', price: '4.35', note: '', category: 'H' },
+                { code: 'H11Y',   name: '彩色通用型熱收縮套管 11.0mm (黃)', unit: 'M', price: '4.35', note: '', category: 'H' },
+                { code: 'H11G',   name: '彩色通用型熱收縮套管 11.0mm (綠)', unit: 'M', price: '4.35', note: '', category: 'H' },
+                { code: 'H11BL',  name: '彩色通用型熱收縮套管 11.0mm (藍)', unit: 'M', price: '4.35', note: '', category: 'H' },
+                
+                // 12.0mm price: 4.84
+                { code: 'H12R',   name: '彩色通用型熱收縮套管 12.0mm (紅)', unit: 'M', price: '4.84', note: '', category: 'H' },
+                { code: 'H12Y',   name: '彩色通用型熱收縮套管 12.0mm (黃)', unit: 'M', price: '4.84', note: '', category: 'H' },
+                { code: 'H12G',   name: '彩色通用型熱收縮套管 12.0mm (綠)', unit: 'M', price: '4.84', note: '', category: 'H' },
+                { code: 'H12BL',  name: '彩色通用型熱收縮套管 12.0mm (藍)', unit: 'M', price: '4.84', note: '', category: 'H' },
+                
+                // 13.0mm price: 5.75
+                { code: 'H13R',   name: '彩色通用型熱收縮套管 13.0mm (紅)', unit: 'M', price: '5.75', note: '', category: 'H' },
+                { code: 'H13Y',   name: '彩色通用型熱收縮套管 13.0mm (黃)', unit: 'M', price: '5.75', note: '', category: 'H' },
+                { code: 'H13G',   name: '彩色通用型熱收縮套管 13.0mm (綠)', unit: 'M', price: '5.75', note: '', category: 'H' },
+                { code: 'H13BL',  name: '彩色通用型熱收縮套管 13.0mm (藍)', unit: 'M', price: '5.75', note: '', category: 'H' },
+                
+                // 14.0mm price: 6.11
+                { code: 'H14R',   name: '彩色通用型熱收縮套管 14.0mm (紅)', unit: 'M', price: '6.11', note: '', category: 'H' },
+                { code: 'H14Y',   name: '彩色通用型熱收縮套管 14.0mm (黃)', unit: 'M', price: '6.11', note: '', category: 'H' },
+                { code: 'H14G',   name: '彩色通用型熱收縮套管 14.0mm (綠)', unit: 'M', price: '6.11', note: '', category: 'H' },
+                { code: 'H14BL',  name: '彩色通用型熱收縮套管 14.0mm (藍)', unit: 'M', price: '6.11', note: '', category: 'H' },
+                
+                // 15.0mm price: 6.53
+                { code: 'H15R',   name: '彩色通用型熱收縮套管 15.0mm (紅)', unit: 'M', price: '6.53', note: '', category: 'H' },
+                { code: 'H15Y',   name: '彩色通用型熱收縮套管 15.0mm (黃)', unit: 'M', price: '6.53', note: '', category: 'H' },
+                { code: 'H15G',   name: '彩色通用型熱收縮套管 15.0mm (綠)', unit: 'M', price: '6.53', note: '', category: 'H' },
+                { code: 'H15BL',  name: '彩色通用型熱收縮套管 15.0mm (藍)', unit: 'M', price: '6.53', note: '', category: 'H' },
+                
+                // 16.0mm price: 7.26
+                { code: 'H16R',   name: '彩色通用型熱收縮套管 16.0mm (紅)', unit: 'M', price: '7.26', note: '', category: 'H' },
+                { code: 'H16Y',   name: '彩色通用型熱收縮套管 16.0mm (黃)', unit: 'M', price: '7.26', note: '', category: 'H' },
+                { code: 'H16G',   name: '彩色通用型熱收縮套管 16.0mm (綠)', unit: 'M', price: '7.26', note: '', category: 'H' },
+                { code: 'H16BL',  name: '彩色通用型熱收縮套管 16.0mm (藍)', unit: 'M', price: '7.26', note: '', category: 'H' },
+
+                // AIS 含膠熱縮套管 (黑色 / 一般型) 
+                { code: 'AIS-032', name: '含膠熱縮套管 3.2mm (黑) (1/8")',    unit: 'M', price: '8.200',  note: '包裝：200M',  category: 'AIS' },
+                { code: 'AIS-048', name: '含膠熱縮套管 4.8mm (黑) (3/16")',   unit: 'M', price: '10.200', note: '包裝：100M',  category: 'AIS' },
+                { code: 'AIS-064', name: '含膠熱縮套管 6.4mm (黑) (1/4")',    unit: 'M', price: '13.300', note: '包裝：100M',  category: 'AIS' },
+                { code: 'AIS-095', name: '含膠熱縮套管 9.5mm (黑) (3/8")',    unit: 'M', price: '17.800', note: '包裝：50M',   category: 'AIS' },
+                { code: 'AIS-127', name: '含膠熱縮套管 12.7mm (黑) (1/2")',   unit: 'M', price: '34.700', note: '包裝：1.22M', category: 'AIS' },
+                { code: 'AIS-150', name: '含膠熱縮套管 15.0mm (黑) (5/8")',   unit: 'M', price: '50.200', note: '包裝：1.22M', category: 'AIS' },
+                { code: 'AIS-191', name: '含膠熱縮套管 19.1mm (黑) (3/4")',   unit: 'M', price: '52.400', note: '包裝：1.22M', category: 'AIS' },
+                { code: 'AIS-254', name: '含膠熱縮套管 25.4mm (黑) (1")',     unit: 'M', price: '82.700', note: '包裝：1.22M', category: 'AIS' },
+                { code: 'AIS-381', name: '含膠熱縮套管 38.1mm (黑) (1-1/2")', unit: 'M', price: '110.000',note: '包裝：1.22M', category: 'AIS' },
+
+
+                
+                // AIS 透明含膠熱縮套管（含包裝資訊）
+                { code: 'AIS-032C', name: '含膠熱縮套管 3.2mm (透明) (1/8")',    unit: 'M', price: '4.56',  note: '包裝：200M',   category: 'AIS' },
+                { code: 'AIS-048C', name: '含膠熱縮套管 4.8mm (透明) (3/16")',   unit: 'M', price: '6.60',  note: '包裝：100M',   category: 'AIS' },
+                { code: 'AIS-064C', name: '含膠熱縮套管 6.4mm (透明) (1/4")',    unit: 'M', price: '7.92',  note: '包裝：100M',   category: 'AIS' },
+                { code: 'AIS-095C', name: '含膠熱縮套管 9.5mm (透明) (3/8")',    unit: 'M', price: '13.20', note: '包裝：50M',    category: 'AIS' },
+                { code: 'AIS-127C', name: '含膠熱縮套管 12.7mm (透明) (1/2")',   unit: 'M', price: '20.40', note: '包裝：1.22M',  category: 'AIS' },
+                { code: 'AIS-150C', name: '含膠熱縮套管 15.0mm (透明) (5/8")',   unit: 'M', price: '26.40', note: '包裝：1.22M',  category: 'AIS' },
+                { code: 'AIS-191C', name: '含膠熱縮套管 19.1mm (透明) (3/4")',   unit: 'M', price: '31.70', note: '包裝：1.22M',  category: 'AIS' },
+                { code: 'AIS-254C', name: '含膠熱縮套管 25.4mm (透明) (1")',     unit: 'M', price: '43.40', note: '包裝：1.22M',  category: 'AIS' },
+                { code: 'AIS-381C', name: '含膠熱縮套管 38.1mm (透明) (1-1/2")', unit: 'M', price: '101.90',note: '包裝：1.22M',  category: 'AIS' },
+
+
+                // PET 擴充編織網管
+                { code: 'PET-032', name: '擴充編織網管 3.2mm (1/8")',       unit: 'M', price: '3.36',  note: '包裝：305m/卷', category: 'PET' },
+                { code: 'PET-064', name: '擴充編織網管 6.4mm (1/4")',       unit: 'M', price: '3.90',  note: '包裝：305m/卷', category: 'PET' },
+                { code: 'PET-095', name: '擴充編織網管 9.5mm (3/8")',       unit: 'M', price: '4.50',  note: '包裝：152m/卷', category: 'PET' },
+                { code: 'PET-127', name: '擴充編織網管 12.7mm (1/2")',      unit: 'M', price: '5.70',  note: '包裝：152m/卷', category: 'PET' },
+                { code: 'PET-150', name: '擴充編織網管 15.0mm',             unit: 'M', price: '8.41',  note: '包裝：152m/卷', category: 'PET' },
+                { code: 'PET-191', name: '擴充編織網管 19.1mm (3/4")',      unit: 'M', price: '9.70',  note: '包裝：77m/卷',  category: 'PET' },
+                { code: 'PET-320', name: '擴充編織網管 32.0mm (1-1/4")',    unit: 'M', price: '20.80', note: '包裝：77m/卷',  category: 'PET' },
+                { code: 'PET-381', name: '擴充編織網管 38.1mm (1-1/2")',    unit: 'M', price: '28.80', note: '包裝：61m/卷',  category: 'PET' },
+                { code: 'PET-445', name: '擴充編織網管 44.5mm (1-3/4")',    unit: 'M', price: '31.70', note: '包裝：61m/卷',  category: 'PET' },
+                { code: 'PET-500', name: '擴充編織網管 50.0mm (2")',        unit: 'M', price: '32.30', note: '包裝：61m/卷',  category: 'PET' },
+
             
             // 裁切費
             { code: 'Z043', name: '裁切費 0~999mm', unit: 'M', price: '0.3', note: '加工服務', category: '裁切費' },
