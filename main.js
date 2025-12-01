@@ -1,7 +1,7 @@
 // =======================
 // 產品資料（你可以依照格式自己繼續往下補）
 // =======================
-        const presetProducts = [
+        const allProducts = [
             // PVC高壓套管300v系列
             { code: 'CFT-3-0A', name: 'PVC高壓套管 300V  0AWG 8.38mm', unit: 'M', price: '2.75', note: '152.5M/R', category: 'PVC-3' },
             { code: 'CFT-3-1A', name: 'PVC-3高壓套管 300V  1AWG 7.47mm', unit: 'M', price: '2.52', note: '152.5M/R', category: 'PVC-3' },
@@ -185,7 +185,7 @@
             { code: 'H-06', name: '通用型熱收縮套管 6.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
             { code: 'H-07', name: '通用型熱收縮套管 7.0mm', unit: 'M', price: '', note: '200M/捲', category: 'H' },
             { code: 'H-08', name: '通用型熱收縮套管 8.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
-            { code: 'H-09', name: '通用型熱收縮套管 9.0mm', unit: 'M', price: '‘, note: ‘100M/捲', category: 'H' },
+            { code: 'H-09', name: '通用型熱收縮套管 9.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
             { code: 'H-10', name: '通用型熱收縮套管 10.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
             { code: 'H-11', name: '通用型熱收縮套管 11.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
             { code: 'H-12', name: '通用型熱收縮套管 12.0mm', unit: 'M', price: '', note: '100M/捲', category: 'H' },
