@@ -483,10 +483,11 @@ function applyDiscount(price) {
 // 工具：依分類 + 關鍵字過濾產品
 // =======================
 function getFilteredProducts(category, keyword = "") {
+  const c = (category || "").trim();   // ← 多這一行
   let base = allProducts;
 
-  if (category && category !== "all") {
-    base = base.filter(p => p.category === category);
+  if (c && c !== "all") {
+    base = base.filter(p => (p.category || "").trim() === c);
   }
 
   if (keyword) {
@@ -500,6 +501,7 @@ function getFilteredProducts(category, keyword = "") {
 
   return base;
 }
+
 
 // =======================
 // 產品目錄渲染
@@ -536,21 +538,19 @@ function renderProductCatalog() {
 // 分類篩選
 // =======================
 function filterByCategory(category) {
+  category = (category || "").trim();  // ← 新增
   currentCategory = category;
 
-  // 更新按鈕樣式
   const buttons = document.querySelectorAll(".category-filter");
   buttons.forEach(btn => {
-    if (btn.dataset.category === category) {
-      btn.classList.add("active");
-    } else if (category === "all" && btn.dataset.category === "all") {
+    const btnCat = (btn.dataset.category || "").trim(); // ← 新增
+    if (btnCat === category || (category === "all" && btnCat === "all")) {
       btn.classList.add("active");
     } else {
       btn.classList.remove("active");
     }
   });
 
-  // 套用分類 + 搜尋關鍵字
   const keyword = (document.getElementById("productSearch")?.value || "").trim();
   filteredProducts = getFilteredProducts(category, keyword);
 
@@ -567,6 +567,7 @@ function filterByCategory(category) {
 
   renderProductCatalog();
 }
+
 
 // =======================
 // 搜尋產品
