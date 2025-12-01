@@ -1,7 +1,6 @@
 // =======================
-// 產品資料（可依需要繼續補）
+// 產品資料（你可以依照格式自己繼續往下補）
 // =======================
-const presetProducts = [
         const presetProducts = [
             // PVC高壓套管300v系列
             { code: 'CFT-3-0A', name: 'PVC高壓套管 300V  0AWG 8.38mm', unit: 'M', price: '2.75', note: '152.5M/R', category: 'PVC-3' },
@@ -244,304 +243,364 @@ const presetProducts = [
             { code: 'Z044', name: '裁切費 1m以上', unit: 'M', price: '0.5', note: '加工服務', category: '裁切費' }
         ];
 
-// 目前顯示中的產品（受篩選影響）
-let filteredProducts = [...presetProducts];
+let currentCategory = "all";
+let filteredProducts = [...allProducts];
 
 // =======================
 // 初始化
 // =======================
 document.addEventListener("DOMContentLoaded", () => {
-    renderProductCatalog();
-    bindFormEvents();
+  setupEventListeners();
+  renderProductCatalog();
+  updatePreviewProducts(); // 初始先畫一列「請新增產品項目」
 });
 
 // =======================
-// 產品目錄相關
+// 工具：依分類 + 關鍵字過濾產品
+// =======================
+function getFilteredProducts(category, keyword = "") {
+  let base = allProducts;
+
+  if (category && category !== "all") {
+    base = base.filter(p => p.category === category);
+  }
+
+  if (keyword) {
+    const k = keyword.toLowerCase();
+    base = base.filter(
+      p =>
+        (p.code && p.code.toLowerCase().includes(k)) ||
+        (p.name && p.name.toLowerCase().includes(k))
+    );
+  }
+
+  return base;
+}
+
+// =======================
+// 產品目錄渲染
 // =======================
 function renderProductCatalog() {
-    const catalog = document.getElementById("productCatalog");
-    catalog.innerHTML = "";
+  const catalog = document.getElementById("productCatalog");
+  if (!catalog) return;
 
-    if (!filteredProducts.length) {
-        catalog.innerHTML = "<p>目前此分類沒有產品。</p>";
-        return;
-    }
+  catalog.innerHTML = "";
 
-    filteredProducts.forEach((p, index) => {
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.innerHTML = `
-            <input type="checkbox" class="product-select-checkbox" data-index="${index}">
-            <div class="product-card-main">
-                <div class="product-card-code">${p.code}</div>
-                <div class="product-card-name">${p.name}</div>
-                <div class="product-card-meta">
-                    單位：${p.unit || "-"}　｜　單價：${p.price || "-"}　｜　備註：${p.note || "-"}
-                </div>
-            </div>
-        `;
-        catalog.appendChild(card);
-    });
-}
+  if (!filteredProducts.length) {
+    catalog.innerHTML = `<p>目前此分類沒有符合條件的產品。</p>`;
+    return;
+  }
 
-// 篩選分類
-function filterByCategory(category) {
-    const buttons = document.querySelectorAll(".category-filter");
-    buttons.forEach(btn => {
-        if (btn.dataset.category === category || (category === "all" && btn.dataset.category === "all")) {
-            btn.classList.add("active");
-        } else {
-            btn.classList.remove("active");
-        }
-    });
-
-    if (category === "all") {
-        filteredProducts = [...presetProducts];
-        document.getElementById("categoryInfo").textContent = "顯示全部產品";
-    } else {
-        filteredProducts = presetProducts.filter(p => p.category === category);
-        document.getElementById("categoryInfo").textContent = `顯示分類：${category}`;
-    }
-
-    renderProductCatalog();
-}
-
-// 搜尋產品
-function searchProducts() {
-    const keyword = document.getElementById("productSearch").value.trim().toLowerCase();
-    if (!keyword) {
-        // 回到目前分類的全部
-        filterByCategory(document.querySelector(".category-filter.active")?.dataset.category || "all");
-        return;
-    }
-
-    filteredProducts = presetProducts.filter(p => {
-        return (
-            (p.code && p.code.toLowerCase().includes(keyword)) ||
-            (p.name && p.name.toLowerCase().includes(keyword))
-        );
-    });
-
-    document.getElementById("categoryInfo").textContent = `搜尋結果：「${keyword}」`;
-    renderProductCatalog();
-}
-
-// 全選
-function selectAllProducts() {
-    document.querySelectorAll(".product-select-checkbox").forEach(chk => {
-        chk.checked = true;
-    });
-}
-
-// 清除選擇
-function clearAllProducts() {
-    document.querySelectorAll(".product-select-checkbox").forEach(chk => {
-        chk.checked = false;
-    });
-}
-
-// =======================
-// 已選產品列表 + 預覽表格
-// =======================
-function addSelectedProducts() {
-    const checkboxes = document.querySelectorAll(".product-select-checkbox:checked");
-    if (!checkboxes.length) return;
-
-    checkboxes.forEach(chk => {
-        const index = parseInt(chk.dataset.index, 10);
-        const product = filteredProducts[index];
-        if (product) addProductItem(product);
-    });
-
-    // 清除勾選
-    clearAllProducts();
-    updatePreviewProducts();
-}
-
-// 新增自訂產品
-function addCustomProduct() {
-    const emptyProduct = { code: "", name: "", unit: "", price: "", note: "" };
-    addProductItem(emptyProduct);
-    updatePreviewProducts();
-}
-
-// 建立一筆「已選產品」欄位
-function addProductItem(product) {
-    const list = document.getElementById("productList");
-
-    const row = document.createElement("div");
-    row.className = "product-item";
-
-    row.innerHTML = `
-        <input type="text" class="p-code" placeholder="產品編號" value="${product.code || ""}">
-        <input type="text" class="p-name" placeholder="品名規格" value="${product.name || ""}">
-        <input type="text" class="p-unit" placeholder="單位" value="${product.unit || ""}">
-        <input type="text" class="p-price" placeholder="單價" value="${product.price || ""}">
-        <input type="text" class="p-note" placeholder="備註" value="${product.note || ""}">
-        <button type="button" class="btn btn-danger">刪除</button>
+  filteredProducts.forEach((p, index) => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.innerHTML = `
+      <input type="checkbox" class="product-select-checkbox" data-index="${index}">
+      <div class="product-card-main">
+        <div class="product-card-code">${p.code}</div>
+        <div class="product-card-name">${p.name}</div>
+        <div class="product-card-meta">
+          單位：${p.unit || "-"}　｜　單價：${p.price || "-"}　｜　備註：${p.note || "-"}
+        </div>
+      </div>
     `;
-
-    // 欄位變動時更新預覽
-    row.querySelectorAll("input").forEach(input => {
-        input.addEventListener("input", updatePreviewProducts);
-    });
-
-    // 刪除按鈕
-    row.querySelector(".btn-danger").addEventListener("click", () => {
-        row.remove();
-        updatePreviewProducts();
-    });
-
-    list.appendChild(row);
+    catalog.appendChild(card);
+  });
 }
 
-// 更新預覽表格
+// =======================
+// 分類篩選
+// =======================
+function filterByCategory(category) {
+  currentCategory = category;
+
+  // 更新按鈕樣式
+  const buttons = document.querySelectorAll(".category-filter");
+  buttons.forEach(btn => {
+    if (btn.dataset.category === category) {
+      btn.classList.add("active");
+    } else if (category === "all" && btn.dataset.category === "all") {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  // 套用分類 + 搜尋關鍵字
+  const keyword = (document.getElementById("productSearch")?.value || "").trim();
+  filteredProducts = getFilteredProducts(category, keyword);
+
+  const info = document.getElementById("categoryInfo");
+  if (info) {
+    if (keyword) {
+      info.textContent = `分類：${category === "all" ? "全部" : category}，關鍵字：「${keyword}」`;
+    } else if (category === "all") {
+      info.textContent = "顯示全部產品";
+    } else {
+      info.textContent = `顯示分類：${category}`;
+    }
+  }
+
+  renderProductCatalog();
+}
+
+// =======================
+// 搜尋產品
+// =======================
+function searchProducts() {
+  const keyword = (document.getElementById("productSearch")?.value || "").trim();
+  filteredProducts = getFilteredProducts(currentCategory, keyword);
+
+  const info = document.getElementById("categoryInfo");
+  if (info) {
+    if (keyword) {
+      info.textContent = `搜尋結果：「${keyword}」`;
+    } else if (currentCategory === "all") {
+      info.textContent = "顯示全部產品";
+    } else {
+      info.textContent = `顯示分類：${currentCategory}`;
+    }
+  }
+
+  renderProductCatalog();
+}
+
+// =======================
+// 選取 / 新增產品到報價清單
+// =======================
+function selectAllProducts() {
+  document.querySelectorAll(".product-select-checkbox").forEach(chk => {
+    chk.checked = true;
+  });
+}
+
+function clearAllProducts() {
+  document.querySelectorAll(".product-select-checkbox").forEach(chk => {
+    chk.checked = false;
+  });
+}
+
+function addSelectedProducts() {
+  const checkboxes = document.querySelectorAll(".product-select-checkbox:checked");
+  if (!checkboxes.length) return;
+
+  checkboxes.forEach(chk => {
+    const idx = parseInt(chk.dataset.index, 10);
+    const product = filteredProducts[idx];
+    if (product) addProductItem(product);
+  });
+
+  clearAllProducts();
+  updatePreviewProducts();
+}
+
+function addCustomProduct() {
+  addProductItem({ code: "", name: "", unit: "", price: "", note: "" });
+  updatePreviewProducts();
+}
+
+// 建立一列可編輯的產品欄位
+function addProductItem(p) {
+  const list = document.getElementById("productList");
+  if (!list) return;
+
+  const row = document.createElement("div");
+  row.className = "product-item";
+  row.innerHTML = `
+    <input type="text" class="p-code" placeholder="產品編號" value="${p.code || ""}">
+    <input type="text" class="p-name" placeholder="品名規格" value="${p.name || ""}">
+    <input type="text" class="p-unit" placeholder="單位" value="${p.unit || ""}">
+    <input type="text" class="p-price" placeholder="單價" value="${p.price || ""}">
+    <input type="text" class="p-note" placeholder="備註" value="${p.note || ""}">
+    <button type="button" class="btn btn-danger">刪除</button>
+  `;
+
+  // 監聽欄位變動 → 更新預覽
+  row.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", updatePreviewProducts);
+  });
+
+  // 刪除按鈕
+  row.querySelector(".btn-danger").addEventListener("click", () => {
+    row.remove();
+    updatePreviewProducts();
+  });
+
+  list.appendChild(row);
+}
+
+// =======================
+// 將目前已選產品同步到預覽表格
+// =======================
 function updatePreviewProducts() {
-    const tbody = document.getElementById("previewProductList");
-    tbody.innerHTML = "";
+  const tbody = document.getElementById("previewProductList");
+  if (!tbody) return;
 
-    const rows = document.querySelectorAll("#productList .product-item");
-    if (!rows.length) {
-        const emptyRow = document.createElement("tr");
-        emptyRow.innerHTML = `<td colspan="5" class="no-product-row">請新增產品項目</td>`;
-        tbody.appendChild(emptyRow);
-        return;
-    }
+  tbody.innerHTML = "";
 
-    rows.forEach(row => {
-        const code = row.querySelector(".p-code").value;
-        const name = row.querySelector(".p-name").value;
-        const unit = row.querySelector(".p-unit").value;
-        const price = row.querySelector(".p-price").value;
-        const note = row.querySelector(".p-note").value;
+  const rows = document.querySelectorAll("#productList .product-item");
+  if (!rows.length) {
+    const empty = document.createElement("tr");
+    empty.innerHTML = `<td colspan="5" class="no-product-row">請新增產品項目</td>`;
+    tbody.appendChild(empty);
+    return;
+  }
 
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${code || "&nbsp;"}</td>
-            <td>${name || "&nbsp;"}</td>
-            <td>${unit || "&nbsp;"}</td>
-            <td>${price || "&nbsp;"}</td>
-            <td>${note || "&nbsp;"}</td>
-        `;
-        tbody.appendChild(tr);
-    });
+  rows.forEach(row => {
+    const code = row.querySelector(".p-code")?.value || "";
+    const name = row.querySelector(".p-name")?.value || "";
+    const unit = row.querySelector(".p-unit")?.value || "";
+    const price = row.querySelector(".p-price")?.value || "";
+    const note = row.querySelector(".p-note")?.value || "";
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${code || "&nbsp;"}</td>
+      <td>${name || "&nbsp;"}</td>
+      <td>${unit || "&nbsp;"}</td>
+      <td>${price || "&nbsp;"}</td>
+      <td>${note || "&nbsp;"}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 // =======================
-// 表單與預覽同步
+// 表單欄位 ↔ 預覽區同步
 // =======================
-function bindFormEvents() {
-    const mapping = [
-        { inputId: "customerName", spanId: "previewCustomerName" },
-        { inputId: "contactPerson", spanId: "previewContactPerson" },
-        { inputId: "customerPhone", spanId: "previewCustomerPhone" },
-        { inputId: "customerFax", spanId: "previewCustomerFax" },
-        { inputId: "quotePerson", spanId: "previewQuotePerson" },
-    ];
+function setupEventListeners() {
+  const mapping = [
+    { inputId: "customerName", spanId: "previewCustomerName" },
+    { inputId: "contactPerson", spanId: "previewContactPerson" },
+    { inputId: "customerPhone", spanId: "previewCustomerPhone" },
+    { inputId: "customerFax", spanId: "previewCustomerFax" },
+    { inputId: "quotePerson", spanId: "previewQuotePerson" },
+    { inputId: "quotePerson", spanId: "previewQuotePersonFooter" }, // 簽章區承辦業務
+  ];
 
-    mapping.forEach(m => {
-        const input = document.getElementById(m.inputId);
-        const span = document.getElementById(m.spanId);
-        if (!input || !span) return;
+  mapping.forEach(m => {
+    const input = document.getElementById(m.inputId);
+    const span = document.getElementById(m.spanId);
+    if (!input || !span) return;
 
-        input.addEventListener("input", () => {
-            span.textContent = input.value || "-";
-        });
+    input.addEventListener("input", () => {
+      span.textContent = input.value || "-";
     });
+  });
 
-    const quoteDate = document.getElementById("quoteDate");
-    const validDate = document.getElementById("validDate");
+  const quoteDate = document.getElementById("quoteDate");
+  const validDate = document.getElementById("validDate");
 
-    if (quoteDate) {
-        quoteDate.addEventListener("change", () => {
-            document.getElementById("previewQuoteDate").textContent =
-                quoteDate.value || "-";
-        });
-    }
-    if (validDate) {
-        validDate.addEventListener("change", () => {
-            document.getElementById("previewValidDate").textContent =
-                validDate.value || "-";
-        });
-    }
+  if (quoteDate) {
+    quoteDate.addEventListener("change", () => {
+      document.getElementById("previewQuoteDate").textContent =
+        quoteDate.value || "-";
+    });
+  }
+  if (validDate) {
+    validDate.addEventListener("change", () => {
+      document.getElementById("previewValidDate").textContent =
+        validDate.value || "-";
+    });
+  }
 }
 
 // =======================
-// 範例資料載入
+// 載入範例資料（FSG-3全系列）
 // =======================
 function loadPresetData() {
-    document.getElementById("customerName").value = "銓銪工業廠";
-    document.getElementById("contactPerson").value = "王先生";
-    document.getElementById("customerPhone").value = "04-26351998";
-    document.getElementById("customerFax").value = "04-26365689";
-    document.getElementById("quotePerson").value = "黃麟傑";
+  const setValue = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    if (el.tagName.toLowerCase() === "input") {
+      el.dispatchEvent(new Event("input"));
+      el.dispatchEvent(new Event("change"));
+    }
+  };
 
-    // 報價日期＝今天，有效日期＋7天（可自行調整）
-    const today = new Date();
-    const pad = n => (n < 10 ? "0" + n : n);
-    const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+  setValue("customerName", "銓銪工業廠");
+  setValue("contactPerson", "王先生");
+  setValue("customerPhone", "04-26351998");
+  setValue("customerFax", "04-26365689");
+  setValue("quotePerson", "黃麟傑");
 
-    const valid = new Date(today.getTime() + 7 * 86400000);
-    const validStr = `${valid.getFullYear()}-${pad(valid.getMonth() + 1)}-${pad(valid.getDate())}`;
+  // 報價日期 = 今天，有效日期 = ＋7 天
+  const today = new Date();
+  const pad = n => (n < 10 ? "0" + n : n);
+  const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(
+    today.getDate()
+  )}`;
 
-    document.getElementById("quoteDate").value = todayStr;
-    document.getElementById("validDate").value = validStr;
+  const valid = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const validStr = `${valid.getFullYear()}-${pad(valid.getMonth() + 1)}-${pad(
+    valid.getDate()
+  )}`;
 
-    // 觸發同步
-    document.getElementById("customerName").dispatchEvent(new Event("input"));
-    document.getElementById("contactPerson").dispatchEvent(new Event("input"));
-    document.getElementById("customerPhone").dispatchEvent(new Event("input"));
-    document.getElementById("customerFax").dispatchEvent(new Event("input"));
-    document.getElementById("quotePerson").dispatchEvent(new Event("input"));
-    document.getElementById("quoteDate").dispatchEvent(new Event("change"));
-    document.getElementById("validDate").dispatchEvent(new Event("change"));
+  const quoteDate = document.getElementById("quoteDate");
+  const validDate = document.getElementById("validDate");
+  if (quoteDate) {
+    quoteDate.value = todayStr;
+    quoteDate.dispatchEvent(new Event("change"));
+  }
+  if (validDate) {
+    validDate.value = validStr;
+    validDate.dispatchEvent(new Event("change"));
+  }
 
-    // 清空已選產品，填入 FSG-3 全系列（示意）
-    document.getElementById("productList").innerHTML = "";
-    const fsgProducts = presetProducts.filter(p => p.category === "FSG-3");
-    fsgProducts.forEach(p => addProductItem(p));
-    updatePreviewProducts();
+  // 填入 FSG-3 全系列
+  const list = document.getElementById("productList");
+  if (list) list.innerHTML = "";
+  const fsg3 = allProducts.filter(p => p.category === "FSG-3");
+  fsg3.forEach(p => addProductItem(p));
+  updatePreviewProducts();
 }
 
 // =======================
 // 產生 PDF
 // =======================
 function generatePDF() {
-    const preview = document.getElementById("quotationPreview");
-    if (!preview) return;
+  const preview = document.getElementById("quotationPreview");
+  if (!preview) return;
 
-    const { jsPDF } = window.jspdf;
+  const { jsPDF } = window.jspdf;
 
-    html2canvas(preview, { scale: 2 }).then(canvas => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
+  html2canvas(preview, { scale: 2 }).then(canvas => {
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
 
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-        const imgWidth = pageWidth - 20; // 左右各留 10mm 邊界
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const margin = 10;
+    const imgWidth = pageWidth - margin * 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        let position = 10;
+    if (imgHeight <= pageHeight - margin * 2) {
+      pdf.addImage(imgData, "PNG", margin, margin, imgWidth, imgHeight);
+    } else {
+      // 粗略多頁切分
+      let position = 0;
+      let heightLeft = imgHeight;
 
-        if (imgHeight < pageHeight - 20) {
-            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-        } else {
-            // 如果內容超過一頁，簡單切頁（粗略做法）
-            let heightLeft = imgHeight;
-            let y = 10;
+      let page = 1;
+      while (heightLeft > 0) {
+        if (page > 1) pdf.addPage();
+        const y = margin - position;
+        pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
+        heightLeft -= pageHeight - margin * 2;
+        position += pageHeight - margin * 2;
+        page++;
+      }
+    }
 
-            pdf.addImage(imgData, "PNG", 10, y, imgWidth, imgHeight);
-            heightLeft -= (pageHeight - 20);
+    pdf.save("quotation.pdf");
+  });
+}
 
-            while (heightLeft > 0) {
-                pdf.addPage();
-                y = 10;
-                pdf.addImage(imgData, "PNG", 10, y - (imgHeight - heightLeft), imgWidth, imgHeight);
-                heightLeft -= (pageHeight - 20);
-            }
-        }
-
-        pdf.save("quotation.pdf");
-    });
+// =======================
+// 若有需要列印紙本（非 PDF），可以用這個（選用）
+// =======================
+function printQuotation() {
+  window.print();
 }
