@@ -256,6 +256,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =======================
+// 折數計算 （核心功能）
+// =======================
+function applyDiscount(price) {
+  const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
+  const p = parseFloat(price);
+  if (isNaN(p)) return price;  // 若沒有價格就不處理
+  return (p * rate).toFixed(2);
+}
+
+// =======================
 // 工具：依分類 + 關鍵字過濾產品
 // =======================
 function getFilteredProducts(category, keyword = "") {
@@ -503,6 +513,8 @@ function setupEventListeners() {
     { inputId: "quotePerson", spanId: "previewQuotePersonFooter" }, // 簽章區承辦業務
   ];
 
+   
+
   function applyDiscount(price) {
   const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
   const p = parseFloat(price);
@@ -511,13 +523,13 @@ function setupEventListeners() {
 }
 
 
-  const discount = document.getElementById("discountRate");
+ const discount = document.getElementById("discountRate");
     if (discount) {
     discount.addEventListener("input", () => {
         updatePreviewProducts();
     });
     }
-
+    
   mapping.forEach(m => {
     const input = document.getElementById(m.inputId);
     const span = document.getElementById(m.spanId);
