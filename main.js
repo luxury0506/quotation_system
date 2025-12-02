@@ -20,10 +20,60 @@ fetch('products.json')
 // 初始化
 // =======================
 document.addEventListener("DOMContentLoaded", () => {
-  setupEventListeners();
-  renderProductCatalog();
-  updatePreviewProducts(); // 初始先畫一列「請新增產品項目」
+  loadCustomerData();
+
+  const nameInput = document.getElementById("customerName");
+  const contactInput = document.getElementById("contactPerson");
+  const phoneInput = document.getElementById("customerPhone");
+  const faxInput = document.getElementById("customerFax");
+  const invoiceAddrInput = document.getElementById("invoiceAddress");
+  const companyAddrInput = document.getElementById("companyAddress");
+  const shippingAddrInput = document.getElementById("shippingAddress");
+
+  if (!nameInput) return;
+
+  // （你原本如果有 nameInput.addEventListener("input", ...) 可以保留或刪掉）
 });
+
+  // ❶ 按 Tab 時自動帶入客戶資料
+  nameInput.addEventListener("keydown", (e) => {
+    if (e.key !== "Tab") return;      // 只處理 Tab
+    const keyword = nameInput.value.trim();
+    if (!keyword) return;             // 空的就讓 Tab 正常跳欄位
+
+    // 先找「以關鍵字開頭」的，再找「包含關鍵字」的
+    let matches = allCustomers.filter(c => c.name && c.name.startsWith(keyword));
+    if (matches.length === 0) {
+      matches = allCustomers.filter(c => c.name && c.name.includes(keyword));
+    }
+    if (matches.length === 0) {
+      // 找不到就讓 Tab 照常運作
+      return;
+    }
+
+    // 如果有找到，阻止預設 Tab 行為，改成自動帶入
+    e.preventDefault();
+
+    const customer = matches[0];   // 先用第一筆，之後你要做選單也可以
+    fillCustomerFields(customer);
+
+    // 自動把焦點移到下一欄（聯絡人）
+    if (contactInput) {
+      contactInput.focus();
+    }
+  });
+
+    // （可選）輸入時就嘗試自動補資料
+  nameInput.addEventListener("input", () => {
+    const keyword = nameInput.value.trim();
+    if (!keyword) return;
+
+    const matched = allCustomers.find(c => c.name && c.name.includes(keyword));
+    if (!matched) return;
+
+    fillCustomerFields(matched);
+  });
+
 
 // =======================
 // 折數計算 （核心功能）
