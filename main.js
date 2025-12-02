@@ -392,6 +392,40 @@ async function loadCustomerData() {
     console.error("載入客戶資料失敗", e);
   }
 }
+// 共用：把客戶資料寫進各個欄位 & 預覽區
+function fillCustomerFields(customer) {
+  const nameInput = document.getElementById("customerName");
+  const contactInput = document.getElementById("contactPerson");
+  const phoneInput = document.getElementById("customerPhone");
+  const faxInput = document.getElementById("customerFax");
+  const invoiceAddrInput = document.getElementById("invoiceAddress");
+  const companyAddrInput = document.getElementById("companyAddress");
+  const shippingAddrInput = document.getElementById("shippingAddress");
+
+  if (nameInput) nameInput.value = customer.name || "";
+  if (contactInput) contactInput.value = customer.contactPerson || "";
+  if (phoneInput) phoneInput.value = customer.phone || "";
+  if (faxInput) faxInput.value = customer.fax || "";
+  if (invoiceAddrInput) invoiceAddrInput.value = customer.invoiceAddress || "";
+  if (companyAddrInput) companyAddrInput.value = customer.companyAddress || "";
+  if (shippingAddrInput) shippingAddrInput.value = customer.shippingAddress || "";
+
+  // 同步預覽區（如果你有這些 span）
+  const mapping = {
+    customerName: "previewCustomerName",
+    contactPerson: "previewContactPerson",
+    customerPhone: "previewCustomerPhone",
+    customerFax: "previewCustomerFax"
+  };
+
+  Object.entries(mapping).forEach(([inputId, spanId]) => {
+    const input = document.getElementById(inputId);
+    const span = document.getElementById(spanId);
+    if (input && span) {
+      span.textContent = input.value || "-";
+    }
+  });
+}
 
 // 載入後綁定事件
 document.addEventListener("DOMContentLoaded", () => {
