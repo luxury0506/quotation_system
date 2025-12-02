@@ -379,13 +379,13 @@ function loadPresetData() {
 }
 
 // ==========================================
-// 客戶資料自動帶入（從 customers_all_with_address.json）
+// 客戶資料自動帶入（從 customers.json）
 // ==========================================
 let allCustomers = [];
 
 async function loadCustomerData() {
   try {
-    const res = await fetch("customers_all_with_address.json");
+    const res = await fetch("customers.json");
     allCustomers = await res.json();
     console.log("客戶資料載入成功，共", allCustomers.length, "筆");
   } catch (e) {
