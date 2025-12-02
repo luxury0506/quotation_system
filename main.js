@@ -1,27 +1,54 @@
 // =======================
-// 產品資料（你可以依照格式自己繼續往下補）
+// 全域變數
 // =======================
 let allProducts = [];
 let filteredProducts = [];
+let currentCategory = "all";
 
-fetch('products.json')
+let allCustomers = []; // 客戶資料（從 customers.json 載入）
+
+// =======================
+// 載入產品資料（products.json）
+// =======================
+fetch("products.json")
   .then(response => response.json())
   .then(data => {
     allProducts = data;
     filteredProducts = [...allProducts];
-    renderProductCatalog(); // 你原本初始化畫面用的函式
+    renderProductCatalog(); // 初始化產品目錄
   })
   .catch(err => {
-    console.error('載入 products.json 失敗', err);
+    console.error("載入 products.json 失敗", err);
   });
 
+// =======================
+// 折數計算（全域通用）
+// =======================
+function applyDiscount(price) {
+  const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
+  const p = parseFloat(price);
+  if (isNaN(rate) || isNaN(p)) return price;
+  return (p * rate).toFixed(2);
+}
 
 // =======================
-// 初始化
+// 客戶資料載入 + 填入工具
 // =======================
-document.addEventListener("DOMContentLoaded", () => {
-  loadCustomerData();
 
+// 從 customers.json 載入
+async function loadCustomerData() {
+  try {
+    const res = await fetch("customers.json");
+    allCustomers = await res.json();
+    console.log("客戶資料載入成功，共", allCustomers.length, "筆");
+  } catch (e) {
+    console.error("載入客戶資料失敗", e);
+    allCustomers = [];
+  }
+}
+
+// 共用：把客戶資料寫進欄位 & 預覽
+function fillCustomerFields(customer) {
   const nameInput = document.getElementById("customerName");
   const contactInput = document.getElementById("contactPerson");
   const phoneInput = document.getElementById("customerPhone");
@@ -30,60 +57,90 @@ document.addEventListener("DOMContentLoaded", () => {
   const companyAddrInput = document.getElementById("companyAddress");
   const shippingAddrInput = document.getElementById("shippingAddress");
 
-  if (!nameInput) return;
+  if (nameInput) nameInput.value = customer.name || "";
+  if (contactInput) contactInput.value = customer.contactPerson || "";
+  if (phoneInput) phoneInput.value = customer.phone || "";
+  if (faxInput) faxInput.value = customer.fax || "";
+  if (invoiceAddrInput) invoiceAddrInput.value = customer.invoiceAddress || "";
+  if (companyAddrInput) companyAddrInput.value = customer.companyAddress || "";
+  if (shippingAddrInput) shippingAddrInput.value = customer.shippingAddress || "";
 
-  // （你原本如果有 nameInput.addEventListener("input", ...) 可以保留或刪掉）
-});
+  // 同步預覽區
+  const mapping = {
+    customerName: "previewCustomerName",
+    contactPerson: "previewContactPerson",
+    customerPhone: "previewCustomerPhone",
+    customerFax: "previewCustomerFax"
+  };
 
-  // ❶ 按 Tab 時自動帶入客戶資料
-  nameInput.addEventListener("keydown", (e) => {
-    if (e.key !== "Tab") return;      // 只處理 Tab
-    const keyword = nameInput.value.trim();
-    if (!keyword) return;             // 空的就讓 Tab 正常跳欄位
-
-    // 先找「以關鍵字開頭」的，再找「包含關鍵字」的
-    let matches = allCustomers.filter(c => c.name && c.name.startsWith(keyword));
-    if (matches.length === 0) {
-      matches = allCustomers.filter(c => c.name && c.name.includes(keyword));
-    }
-    if (matches.length === 0) {
-      // 找不到就讓 Tab 照常運作
-      return;
-    }
-
-    // 如果有找到，阻止預設 Tab 行為，改成自動帶入
-    e.preventDefault();
-
-    const customer = matches[0];   // 先用第一筆，之後你要做選單也可以
-    fillCustomerFields(customer);
-
-    // 自動把焦點移到下一欄（聯絡人）
-    if (contactInput) {
-      contactInput.focus();
+  Object.entries(mapping).forEach(([inputId, spanId]) => {
+    const input = document.getElementById(inputId);
+    const span = document.getElementById(spanId);
+    if (input && span) {
+      span.textContent = input.value || "-";
     }
   });
+}
 
-    // （可選）輸入時就嘗試自動補資料
+// =======================
+// DOMContentLoaded：統一初始化
+// =======================
+document.addEventListener("DOMContentLoaded", () => {
+  // 原本的初始化
+  setupEventListeners();
+  renderProductCatalog();
+  updatePreviewProducts();
+
+  // 載入客戶資料
+  loadCustomerData();
+
+  // 綁定客戶名稱欄位的自動帶入
+  const nameInput = document.getElementById("customerName");
+  const contactInput = document.getElementById("contactPerson");
+
+  if (!nameInput) return;
+
+  // ❶ 輸入時：若找到符合的客戶，就同步帶入（模糊包含）
   nameInput.addEventListener("input", () => {
     const keyword = nameInput.value.trim();
     if (!keyword) return;
+    if (!allCustomers.length) return;
 
-    const matched = allCustomers.find(c => c.name && c.name.includes(keyword));
+    const matched = allCustomers.find(
+      c => c.name && c.name.includes(keyword)
+    );
     if (!matched) return;
 
     fillCustomerFields(matched);
   });
 
+  // ❷ 按 Tab：用關鍵字找「最接近的客戶」，自動補全 + 跳到聯絡人
+  nameInput.addEventListener("keydown", (e) => {
+    if (e.key !== "Tab") return;
+    const keyword = nameInput.value.trim();
+    if (!keyword) return;
+    if (!allCustomers.length) return;
 
-// =======================
-// 折數計算 （核心功能）
-// =======================
-function applyDiscount(price) {
-  const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
-  const p = parseFloat(price);
-  if (isNaN(p)) return price;  // 若沒有價格就不處理
-  return (p * rate).toFixed(2);
-}
+    // 優先找「以關鍵字開頭」的
+    let matches = allCustomers.filter(
+      c => c.name && c.name.startsWith(keyword)
+    );
+    // 找不到再退而求其次「包含關鍵字」
+    if (!matches.length) {
+      matches = allCustomers.filter(
+        c => c.name && c.name.includes(keyword)
+      );
+    }
+    if (!matches.length) return;
+
+    e.preventDefault(); // 攔截預設 Tab 行為
+
+    const customer = matches[0];
+    fillCustomerFields(customer);
+
+    if (contactInput) contactInput.focus();
+  });
+});
 
 // =======================
 // 工具：依分類 + 關鍵字過濾產品
@@ -196,16 +253,6 @@ function searchProducts() {
 }
 
 // =======================
-// 折數計算 （核心功能）
-// =======================
-function applyDiscount(price) {
-  const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
-  const p = parseFloat(price);
-  if (isNaN(p)) return price;  // 若沒有價格就不處理
-  return (p * rate).toFixed(2);
-}
-
-// =======================
 // 選取 / 新增產品到報價清單
 // =======================
 function selectAllProducts() {
@@ -246,12 +293,11 @@ function addCustomProduct() {
     code: "",
     name: "",
     unit: "",
-    price: applyDiscount(0), // 你可以改成空字串
+    price: applyDiscount(0),
     note: ""
   });
   updatePreviewProducts();
 }
-
 
 // 建立一列可編輯的產品欄位
 function addProductItem(p) {
@@ -319,7 +365,6 @@ function updatePreviewProducts() {
   });
 }
 
-
 // =======================
 // 表單欄位 ↔ 預覽區同步
 // =======================
@@ -330,26 +375,17 @@ function setupEventListeners() {
     { inputId: "customerPhone", spanId: "previewCustomerPhone" },
     { inputId: "customerFax", spanId: "previewCustomerFax" },
     { inputId: "quotePerson", spanId: "previewQuotePerson" },
-    { inputId: "quotePerson", spanId: "previewQuotePersonFooter" }, // 簽章區承辦業務
+    { inputId: "quotePerson", spanId: "previewQuotePersonFooter" }
   ];
 
-   
-
-  function applyDiscount(price) {
-  const rate = parseFloat(document.getElementById("discountRate")?.value || "1");
-  const p = parseFloat(price);
-  if (isNaN(rate) || isNaN(p)) return price;
-  return (p * rate).toFixed(2);
-}
-
-
- const discount = document.getElementById("discountRate");
-    if (discount) {
+  // 折數變動時，重算產品單價
+  const discount = document.getElementById("discountRate");
+  if (discount) {
     discount.addEventListener("input", () => {
-        updatePreviewProducts();
+      updatePreviewProducts();
     });
-    }
-    
+  }
+
   mapping.forEach(m => {
     const input = document.getElementById(m.inputId);
     const span = document.getElementById(m.spanId);
@@ -428,102 +464,6 @@ function loadPresetData() {
   updatePreviewProducts();
 }
 
-// ==========================================
-// 客戶資料自動帶入（從 customers.json）
-// ==========================================
-let allCustomers = [];
-
-async function loadCustomerData() {
-  try {
-    const res = await fetch("customers.json");
-    allCustomers = await res.json();
-    console.log("客戶資料載入成功，共", allCustomers.length, "筆");
-  } catch (e) {
-    console.error("載入客戶資料失敗", e);
-  }
-}
-// 共用：把客戶資料寫進各個欄位 & 預覽區
-function fillCustomerFields(customer) {
-  const nameInput = document.getElementById("customerName");
-  const contactInput = document.getElementById("contactPerson");
-  const phoneInput = document.getElementById("customerPhone");
-  const faxInput = document.getElementById("customerFax");
-  const invoiceAddrInput = document.getElementById("invoiceAddress");
-  const companyAddrInput = document.getElementById("companyAddress");
-  const shippingAddrInput = document.getElementById("shippingAddress");
-
-  if (nameInput) nameInput.value = customer.name || "";
-  if (contactInput) contactInput.value = customer.contactPerson || "";
-  if (phoneInput) phoneInput.value = customer.phone || "";
-  if (faxInput) faxInput.value = customer.fax || "";
-  if (invoiceAddrInput) invoiceAddrInput.value = customer.invoiceAddress || "";
-  if (companyAddrInput) companyAddrInput.value = customer.companyAddress || "";
-  if (shippingAddrInput) shippingAddrInput.value = customer.shippingAddress || "";
-
-  // 同步預覽區（如果你有這些 span）
-  const mapping = {
-    customerName: "previewCustomerName",
-    contactPerson: "previewContactPerson",
-    customerPhone: "previewCustomerPhone",
-    customerFax: "previewCustomerFax"
-  };
-
-  Object.entries(mapping).forEach(([inputId, spanId]) => {
-    const input = document.getElementById(inputId);
-    const span = document.getElementById(spanId);
-    if (input && span) {
-      span.textContent = input.value || "-";
-    }
-  });
-}
-
-// 載入後綁定事件
-document.addEventListener("DOMContentLoaded", () => {
-  loadCustomerData();
-
-  const nameInput = document.getElementById("customerName");
-  const contactInput = document.getElementById("contactPerson");
-  const phoneInput = document.getElementById("customerPhone");
-  const faxInput = document.getElementById("customerFax");
-  const invoiceAddrInput = document.getElementById("invoiceAddress");
-  const companyAddrInput = document.getElementById("companyAddress");
-  const shippingAddrInput = document.getElementById("shippingAddress");
-
-  if (!nameInput) return;
-
-  nameInput.addEventListener("input", () => {
-    const keyword = nameInput.value.trim();
-    if (!keyword) return;
-
-    const matched = allCustomers.find(c => c.name && c.name.includes(keyword));
-    if (!matched) return;
-
-    // ➤ 自動帶入
-    if (contactInput) contactInput.value = matched.contactPerson || "";
-    if (phoneInput) phoneInput.value = matched.phone || "";
-    if (faxInput) faxInput.value = matched.fax || "";
-
-    if (invoiceAddrInput) invoiceAddrInput.value = matched.invoiceAddress || "";
-    if (companyAddrInput) companyAddrInput.value = matched.companyAddress || "";
-    if (shippingAddrInput) shippingAddrInput.value = matched.shippingAddress || "";
-
-    // ➤ 同步到預覽（如果你有預覽區）
-    const previewMap = {
-      customerName: "previewCustomerName",
-      contactPerson: "previewContactPerson",
-      customerPhone: "previewCustomerPhone",
-      customerFax: "previewCustomerFax"
-    };
-
-    Object.entries(previewMap).forEach(([inputId, spanId]) => {
-      const input = document.getElementById(inputId);
-      const span = document.getElementById(spanId);
-      if (input && span) span.textContent = input.value || "-";
-    });
-  });
-});
-
-
 // =======================
 // 產生 PDF
 // =======================
@@ -567,10 +507,8 @@ function generatePDF() {
 }
 
 // =======================
-// 若有需要列印紙本（非 PDF），可以用這個（選用）
+// 純列印（選用）
 // =======================
 function printQuotation() {
   window.print();
 }
-
-
