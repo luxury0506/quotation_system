@@ -137,9 +137,9 @@ nameInput.addEventListener("input", () => {
   // ❷ 按 Tab：用關鍵字找「最接近的客戶」，自動補全 + 跳到聯絡人
   nameInput.addEventListener("keydown", (e) => {
     if (e.key !== "Tab") return;
-    const keyword = nameInput.value.trim();
-    if (!keyword) return;
-    if (!allCustomers.length) return;
+      const keyword = nameInput.value.trim();
+  if (keyword.length < 2) return;
+
 
     // 優先找「以關鍵字開頭」的
     let matches = allCustomers.filter(
