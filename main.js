@@ -101,18 +101,38 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!nameInput) return;
 
   // ❶ 輸入時：若找到符合的客戶，就同步帶入（模糊包含）
-  nameInput.addEventListener("input", () => {
-    const keyword = nameInput.value.trim();
-    if (!keyword) return;
-    if (!allCustomers.length) return;
+nameInput.addEventListener("input", () => {
+  const keyword = nameInput.value.trim();
 
-    const matched = allCustomers.find(
-      c => c.name && c.name.includes(keyword)
-    );
-    if (!matched) return;
+  // 👉 少於 2 個字就先不要自動帶入
+  if (keyword.length < 2) return;
 
-    fillCustomerFields(matched);
+  const matched = allCustomers.find(c => c.name && c.name.includes(keyword));
+  if (!matched) return;
+
+  // ➤ 自動帶入
+  if (contactInput) contactInput.value = matched.contactPerson || "";
+  if (phoneInput) phoneInput.value = matched.phone || "";
+  if (faxInput) faxInput.value = matched.fax || "";
+
+  if (invoiceAddrInput) invoiceAddrInput.value = matched.invoiceAddress || "";
+  if (companyAddrInput) companyAddrInput.value = matched.companyAddress || "";
+  if (shippingAddrInput) shippingAddrInput.value = matched.shippingAddress || "";
+
+  const previewMap = {
+    customerName: "previewCustomerName",
+    contactPerson: "previewContactPerson",
+    customerPhone: "previewCustomerPhone",
+    customerFax: "previewCustomerFax"
+  };
+
+  Object.entries(previewMap).forEach(([inputId, spanId]) => {
+    const input = document.getElementById(inputId);
+    const span = document.getElementById(spanId);
+    if (input && span) span.textContent = input.value || "-";
   });
+});
+
 
   // ❷ 按 Tab：用關鍵字找「最接近的客戶」，自動補全 + 跳到聯絡人
   nameInput.addEventListener("keydown", (e) => {
