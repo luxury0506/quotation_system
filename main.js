@@ -378,6 +378,68 @@ function loadPresetData() {
   updatePreviewProducts();
 }
 
+// ==========================================
+// 客戶資料自動帶入（從 customers_all_with_address.json）
+// ==========================================
+let allCustomers = [];
+
+async function loadCustomerData() {
+  try {
+    const res = await fetch("customers_all_with_address.json");
+    allCustomers = await res.json();
+    console.log("客戶資料載入成功，共", allCustomers.length, "筆");
+  } catch (e) {
+    console.error("載入客戶資料失敗", e);
+  }
+}
+
+// 載入後綁定事件
+document.addEventListener("DOMContentLoaded", () => {
+  loadCustomerData();
+
+  const nameInput = document.getElementById("customerName");
+  const contactInput = document.getElementById("contactPerson");
+  const phoneInput = document.getElementById("customerPhone");
+  const faxInput = document.getElementById("customerFax");
+  const invoiceAddrInput = document.getElementById("invoiceAddress");
+  const companyAddrInput = document.getElementById("companyAddress");
+  const shippingAddrInput = document.getElementById("shippingAddress");
+
+  if (!nameInput) return;
+
+  nameInput.addEventListener("input", () => {
+    const keyword = nameInput.value.trim();
+    if (!keyword) return;
+
+    const matched = allCustomers.find(c => c.name && c.name.includes(keyword));
+    if (!matched) return;
+
+    // ➤ 自動帶入
+    if (contactInput) contactInput.value = matched.contactPerson || "";
+    if (phoneInput) phoneInput.value = matched.phone || "";
+    if (faxInput) faxInput.value = matched.fax || "";
+
+    if (invoiceAddrInput) invoiceAddrInput.value = matched.invoiceAddress || "";
+    if (companyAddrInput) companyAddrInput.value = matched.companyAddress || "";
+    if (shippingAddrInput) shippingAddrInput.value = matched.shippingAddress || "";
+
+    // ➤ 同步到預覽（如果你有預覽區）
+    const previewMap = {
+      customerName: "previewCustomerName",
+      contactPerson: "previewContactPerson",
+      customerPhone: "previewCustomerPhone",
+      customerFax: "previewCustomerFax"
+    };
+
+    Object.entries(previewMap).forEach(([inputId, spanId]) => {
+      const input = document.getElementById(inputId);
+      const span = document.getElementById(spanId);
+      if (input && span) span.textContent = input.value || "-";
+    });
+  });
+});
+
+
 // =======================
 // 產生 PDF
 // =======================
@@ -426,4 +488,5 @@ function generatePDF() {
 function printQuotation() {
   window.print();
 }
+
 
