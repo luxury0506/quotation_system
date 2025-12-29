@@ -428,41 +428,30 @@ function setupEventListeners() {
     { inputId: "quotePerson", spanId: "previewQuotePersonFooter" }
   ];
 
-  // 折數變動時，重算產品單價
-  const discount = document.getElementById("discountRate");
-  if (discount) {
-    discount.addEventListener("input", () => {
+  // 當折數變動時，除了更新預覽，也要更新上方清單的「單價」輸入框
+  const discountEl = document.getElementById("discountRate");
+  if (discountEl) {
+    discountEl.addEventListener("input", () => {
+      const rate = parseFloat(discountEl.value || "1");
+      const rows = document.querySelectorAll("#productList .product-item");
+
+      rows.forEach(row => {
+        const priceInput = row.querySelector(".p-price");
+        // 這裡需要注意：如果重複計算會導致價格越來越低
+        // 建議在 addProductItem 時將「原價」存存在 dataset 中
+        const basePrice = parseFloat(priceInput.dataset.basePrice || priceInput.value);
+        
+        if (!isNaN(basePrice)) {
+          // 更新輸入框數值
+          priceInput.value = (basePrice * rate).toFixed(2);
+        }
+      });
+
+      // 最後再同步到預覽區
       updatePreviewProducts();
     });
   }
-
-  mapping.forEach(m => {
-    const input = document.getElementById(m.inputId);
-    const span = document.getElementById(m.spanId);
-    if (!input || !span) return;
-
-    input.addEventListener("input", () => {
-      span.textContent = input.value || "-";
-    });
-  });
-
-  const quoteDate = document.getElementById("quoteDate");
-  const validDate = document.getElementById("validDate");
-
-  if (quoteDate) {
-    quoteDate.addEventListener("change", () => {
-      document.getElementById("previewQuoteDate").textContent =
-        quoteDate.value || "-";
-    });
-  }
-  if (validDate) {
-    validDate.addEventListener("change", () => {
-      document.getElementById("previewValidDate").textContent =
-        validDate.value || "-";
-    });
-  }
 }
-
 // =======================
 // 載入範例資料（FSG-3全系列）
 // =======================
