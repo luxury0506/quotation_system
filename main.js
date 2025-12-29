@@ -355,31 +355,66 @@ function addProductItem(p) {
 
   const row = document.createElement("div");
   row.className = "product-item";
-
-  // 確保取得原始單價作為基準
+  
+  // 取得基準原價與目前的預設折數
   const basePrice = p.basePrice || p.price || 0;
+  const currentDefaultRate = document.getElementById("discountRate")?.value || "1";
 
   row.innerHTML = `
     <input type="text" class="p-code" placeholder="產品編號" value="${p.code || ""}">
     <input type="text" class="p-name" placeholder="品名規格" value="${p.name || ""}">
     <input type="text" class="p-unit" placeholder="單位" value="${p.unit || ""}">
-    <input type="text" class="p-price" data-base-price="${basePrice}" placeholder="單價" value="${p.price || ""}">
+    <input type="number" class="p-discount" step="0.01" min="0" max="1" value="${currentDefaultRate}" title="個別折數">
+    <input type="text" class="p-price" data-base-price="${basePrice}" placeholder="單價" value="${(basePrice * currentDefaultRate).toFixed(2)}">
     <input type="text" class="p-note" placeholder="備註" value="${p.note || ""}">
     <button type="button" class="btn btn-danger">刪除</button>
   `;
 
-  // 監聽欄位變動 → 更新預覽
+  // 當個別折數變動時，重新計算該行的單價
+  row.querySelector(".p-discount").addEventListener("input", (e) => {
+    const rate = parseFloat(e.target.value || "1");
+    const priceInput = row.querySelector(".p-price");
+    const base = parseFloat(priceInput.dataset.basePrice);
+    if (!isNaN(base)) {
+      priceInput.value = (base * rate).toFixed(2);
+      updatePreviewProducts();
+    }
+  });
+
+  // 原有的監聽與刪除邏輯...
   row.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", updatePreviewProducts);
   });
-
-  // 刪除按鈕
   row.querySelector(".btn-danger").addEventListener("click", () => {
     row.remove();
     updatePreviewProducts();
   });
 
   list.appendChild(row);
+}
+
+// 在 setupEventListeners 中修改 discountRate 的監聽
+const discount = document.getElementById("discountRate");
+if (discount) {
+  discount.addEventListener("input", () => {
+    const globalRate = parseFloat(discount.value || "1");
+    const rows = document.querySelectorAll("#productList .product-item");
+
+    rows.forEach(row => {
+      const discountInput = row.querySelector(".p-discount");
+      const priceInput = row.querySelector(".p-price");
+      const base = parseFloat(priceInput.dataset.basePrice);
+      
+      // 更新每一行的折數框
+      discountInput.value = globalRate;
+      
+      // 更新每一行的單價
+      if (!isNaN(base)) {
+        priceInput.value = (base * globalRate).toFixed(2);
+      }
+    });
+    updatePreviewProducts();
+  });
 }
 
 // =======================
