@@ -350,17 +350,17 @@ function addCustomProduct() {
 }
 
 // 建立一列可編輯的產品欄位
-function addProductItem(p) {
-  const list = document.getElementById("productList");
-  if (!list) return;
-
-  const row = document.createElement("div");
+const row = document.createElement("div");
   row.className = "product-item";
+  
+  // 💡 關鍵：將原始價格存在 data-base-price 屬性中
+  const basePrice = p.basePrice || p.price || 0;
+
   row.innerHTML = `
     <input type="text" class="p-code" placeholder="產品編號" value="${p.code || ""}">
     <input type="text" class="p-name" placeholder="品名規格" value="${p.name || ""}">
     <input type="text" class="p-unit" placeholder="單位" value="${p.unit || ""}">
-    <input type="text" class="p-price" placeholder="單價" value="${p.price || ""}">
+    <input type="text" class="p-price" data-base-price="${basePrice}" placeholder="單價" value="${p.price || ""}">
     <input type="text" class="p-note" placeholder="備註" value="${p.note || ""}">
     <button type="button" class="btn btn-danger">刪除</button>
   `;
@@ -377,7 +377,7 @@ function addProductItem(p) {
   });
 
   list.appendChild(row);
-}
+
 
 // =======================
 // 將目前已選產品同步到預覽表格
