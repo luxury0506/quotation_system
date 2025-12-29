@@ -349,11 +349,14 @@ function addCustomProduct() {
   updatePreviewProducts();
 }
 
-// 建立一列可編輯的產品欄位
-const row = document.createElement("div");
+function addProductItem(p) {
+  const list = document.getElementById("productList");
+  if (!list) return;
+
+  const row = document.createElement("div");
   row.className = "product-item";
-  
-  // 💡 關鍵：將原始價格存在 data-base-price 屬性中
+
+  // 確保取得原始單價作為基準
   const basePrice = p.basePrice || p.price || 0;
 
   row.innerHTML = `
@@ -377,7 +380,7 @@ const row = document.createElement("div");
   });
 
   list.appendChild(row);
-
+}
 
 // =======================
 // 將目前已選產品同步到預覽表格
@@ -387,14 +390,34 @@ function updatePreviewProducts() {
   if (!tbody) return;
 
   tbody.innerHTML = "";
-
   const rows = document.querySelectorAll("#productList .product-item");
+
   if (!rows.length) {
     const empty = document.createElement("tr");
     empty.innerHTML = `<td colspan="5" class="no-product-row">請新增產品項目</td>`;
     tbody.appendChild(empty);
     return;
   }
+
+  rows.forEach(row => {
+    const code = row.querySelector(".p-code")?.value || "";
+    const name = row.querySelector(".p-name")?.value || "";
+    const unit = row.querySelector(".p-unit")?.value || "";
+    const price = row.querySelector(".p-price")?.value || ""; // 直接抓取 input 的值
+    const note = row.querySelector(".p-note")?.value || "";
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${code || "&nbsp;"}</td>
+      <td>${name || "&nbsp;"}</td>
+      <td>${unit || "&nbsp;"}</td>
+      <td>${price || "&nbsp;"}</td> 
+      <td>${note || "&nbsp;"}</td>
+    `;
+    // 💡 這裡移除了 applyDiscount(price)，確保預覽跟上方 input 完全同步
+    tbody.appendChild(tr);
+  });
+}
 
   rows.forEach(row => {
     const code = row.querySelector(".p-code")?.value || "";
@@ -413,7 +436,7 @@ function updatePreviewProducts() {
     `;
     tbody.appendChild(tr);
   });
-}
+
 
 // =======================
 // 表單欄位 ↔ 預覽區同步
@@ -424,34 +447,57 @@ function setupEventListeners() {
     { inputId: "contactPerson", spanId: "previewContactPerson" },
     { inputId: "customerPhone", spanId: "previewCustomerPhone" },
     { inputId: "customerFax", spanId: "previewCustomerFax" },
-    { inputId: "quotePerson", spanId: "previewQuotePerson" },
-    { inputId: "quotePerson", spanId: "previewQuotePersonFooter" }
+    { inputId: "quotePerson", spanId: "previewQuotePerson" }
   ];
 
-  // 當折數變動時，除了更新預覽，也要更新上方清單的「單價」輸入框
-  const discountEl = document.getElementById("discountRate");
-  if (discountEl) {
-    discountEl.addEventListener("input", () => {
-      const rate = parseFloat(discountEl.value || "1");
+  // 1. 處理折數變動：更新上方輸入框數值，再同步預覽
+  const discount = document.getElementById("discountRate");
+  if (discount) {
+    discount.addEventListener("input", () => {
+      const rate = parseFloat(discount.value || "1");
       const rows = document.querySelectorAll("#productList .product-item");
 
       rows.forEach(row => {
         const priceInput = row.querySelector(".p-price");
-        // 這裡需要注意：如果重複計算會導致價格越來越低
-        // 建議在 addProductItem 時將「原價」存存在 dataset 中
-        const basePrice = parseFloat(priceInput.dataset.basePrice || priceInput.value);
+        const base = parseFloat(priceInput.dataset.basePrice);
         
-        if (!isNaN(basePrice)) {
-          // 更新輸入框數值
-          priceInput.value = (basePrice * rate).toFixed(2);
+        if (!isNaN(base)) {
+          // 更新清單中的輸入框數值，讓上方視覺保持同步
+          priceInput.value = (base * rate).toFixed(2);
         }
       });
 
-      // 最後再同步到預覽區
+      // 重新整理下方預覽表格
       updatePreviewProducts();
     });
   }
-}
+
+  // 2. 處理文字欄位同步
+  mapping.forEach(m => {
+    const input = document.getElementById(m.inputId);
+    const span = document.getElementById(m.spanId);
+    if (!input || !span) return;
+
+    input.addEventListener("input", () => {
+      span.textContent = input.value || "-";
+    });
+  });
+
+  // 3. 處理日期欄位同步
+  const quoteDate = document.getElementById("quoteDate");
+  const validDate = document.getElementById("validDate");
+
+  if (quoteDate) {
+    quoteDate.addEventListener("change", () => {
+      document.getElementById("previewQuoteDate").textContent = quoteDate.value || "-";
+    });
+  }
+  if (validDate) {
+    validDate.addEventListener("change", () => {
+      document.getElementById("previewValidDate").textContent = validDate.value || "-";
+    });
+  }
+} // <--- 這是結束 setupEventListeners 的大括號
 // =======================
 // 載入範例資料（FSG-3全系列）
 // =======================
