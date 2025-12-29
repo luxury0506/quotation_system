@@ -137,8 +137,8 @@ nameInput.addEventListener("input", () => {
   // ❷ 按 Tab：用關鍵字找「最接近的客戶」，自動補全 + 跳到聯絡人
   nameInput.addEventListener("keydown", (e) => {
     if (e.key !== "Tab") return;
-      const keyword = nameInput.value.trim();
-  if (keyword.length < 2) return;
+    const keyword = nameInput.value.trim();
+    if (keyword.length < 2) return;
 
 
     // 優先找「以關鍵字開頭」的
@@ -287,6 +287,20 @@ function clearAllProducts() {
   });
 }
 
+// ===== 工具函式（若你原本就有，可保留你原本的） =====
+function toNumber(v) {
+  // 支援 "1,234.50" 這種格式
+  return parseFloat(String(v).replace(/,/g, '')) || 0;
+}
+
+function applyDiscount(priceNumber) {
+  const rateEl = document.getElementById('discountRate');
+  const rate = rateEl ? parseFloat(rateEl.value || 1) : 1;
+  // 統一回傳 number（兩位小數）
+  return Math.round(priceNumber * rate * 100) / 100;
+}
+
+// =====【請整段覆蓋你原本的 addSelectedProducts】=====
 function addSelectedProducts() {
   const checkboxes = document.querySelectorAll(".product-select-checkbox:checked");
   if (!checkboxes.length) return;
@@ -294,19 +308,35 @@ function addSelectedProducts() {
   checkboxes.forEach(chk => {
     const idx = parseInt(chk.dataset.index, 10);
     const product = filteredProducts[idx];
+    if (!product) return;
 
-    if (product) {
-      const discounted = {
-        ...product,
-        price: applyDiscount(product.price)
-      };
-      addProductItem(discounted);
-    }
+    // 1️⃣ 原始單價（永遠不變）
+    const basePrice = toNumber(product.price);
+
+    // 2️⃣ 折後單價（唯一顯示/輸出的價格）
+    const finalPrice = applyDiscount(basePrice);
+
+    // 3️⃣ 不要覆蓋 price，保留清楚的欄位
+    const item = {
+      ...product,
+      basePrice,     // 原價（數字）
+      finalPrice     // 折後價（數字）
+    };
+
+    addProductItem(item);
   });
+
+  // 清除勾選狀態
+  clearAllProducts();
+
+  // 強制同步預覽（PDF 與畫面一致）
+  updatePreviewProducts();
+}
+
 
   clearAllProducts();
   updatePreviewProducts();
-}
+
 
 function addCustomProduct() {
   addProductItem({
