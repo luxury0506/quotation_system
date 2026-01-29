@@ -3,7 +3,7 @@
     "code": "CFT-3-0A",
     "name": "PVC高壓套管 300V  0AWG 8.38mm",
     "unit": "M",
-    "price": "2.75",
+    "price": "3.934",
     "note": "152.5M/RL",
     "category": "PVC-3"
   },
@@ -11,7 +11,7 @@
     "code": "CFT-3-1A",
     "name": "PVC-3高壓套管 300V  1AWG 7.47mm",
     "unit": "M",
-    "price": "2.52",
+    "price": "3.607",
     "note": "152.5M/RL",
     "category": "PVC-3"
   },
@@ -19,7 +19,7 @@
     "code": "CFT-3-2A",
     "name": "PVC-3高壓套管 300V  2AWG 6.68mm",
     "unit": "M",
-    "price": "2.30",
+    "price": "3.279",
     "note": "152.5M/RL",
     "category": "PVC-3"
   },
@@ -27,7 +27,7 @@
     "code": "CFT-3-3A",
     "name": "PVC-3高壓套管 300V  3AWG 5.94mm",
     "unit": "M",
-    "price": "2.07",
+    "price": "2.951",
     "note": "152.5M/RL",
     "category": "PVC-3"
   },
@@ -35,120 +35,136 @@
     "code": "CFT-3-4A",
     "name": "PVC-3高壓套管 300V  4AWG 5.28mm",
     "unit": "M",
-    "price": "1.84",
-    "note": "305M/RL",
+    "price": "2.623",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-5A",
-    "name": "PVC-3高壓套管 300V  5AWG 4.72mm",
+    "name": "PVC-3高壓套管 300V  5AWG 4.70mm",
     "unit": "M",
-    "price": "1.63",
-    "note": "305M/RL",
+    "price": "2.328",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-6A",
-    "name": "PVC-3高壓套管 300V  6AWG 4.22mm",
+    "name": "PVC-3高壓套管 300V  6AWG 4.21mm",
     "unit": "M",
-    "price": "1.49",
-    "note": "305M/RL",
+    "price": "2.131",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-7A",
-    "name": "PVC-3高壓套管 300V  7AWG 3.76mm",
+    "name": "PVC-3高壓套管 300V  7AWG 3.74mm",
     "unit": "M",
-    "price": "1.33",
-    "note": "305M/RL",
+    "price": "1.902",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-8A",
-    "name": "PVC-3高壓套管 300V  8AWG 3.38mm",
+    "name": "PVC-3高壓套管 300V  8AWG 3.32mm",
     "unit": "M",
-    "price": "1.22",
-    "note": "305M/RL",
+    "price": "1.738",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-9A",
-    "name": "PVC-3高壓套管 300V  9AWG 3.00mm",
+    "name": "PVC-3高壓套管 300V  9AWG 2.97mm",
     "unit": "M",
-    "price": "1.10",
-    "note": "305M/RL",
+    "price": "1.574",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-10A",
-    "name": "PVC-3高壓套管 300V  10AWG 2.69mm",
+    "name": "PVC-3高壓套管 300V 10AWG 2.65mm",
     "unit": "M",
-    "price": "0.90",
-    "note": "305M/RL",
+    "price": "1.279",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-11A",
-    "name": "PVC-3高壓套管 300V  11AWG 2.41mm",
+    "name": "PVC-3高壓套管 300V 11AWG 2.37mm",
     "unit": "M",
-    "price": "0.85",
-    "note": "305M/RL",
+    "price": "1.213",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-12A",
-    "name": "PVC-3高壓套管 300V  12AWG 2.16mm",
+    "name": "PVC-3高壓套管 300V 12AWG 2.11mm",
     "unit": "M",
-    "price": "0.80",
-    "note": "305M/RL",
+    "price": "1.148",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-13A",
-    "name": "PVC-3高壓套管 300V  13AWG 1.93mm",
+    "name": "PVC-3高壓套管 300V 13AWG 1.88mm",
     "unit": "M",
-    "price": "0.71",
-    "note": "305M/RL",
+    "price": "1.016",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-14A",
-    "name": "PVC-3高壓套管 300V  14AWG 1.68mm",
+    "name": "PVC-3高壓套管 300V 14AWG 1.68mm",
     "unit": "M",
-    "price": "0.69",
-    "note": "305M/RL",
+    "price": "0.984",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-15A",
-    "name": "PVC-3高壓套管 300V  15AWG 1.50mm",
+    "name": "PVC-3高壓套管 300V 15AWG 1.50mm",
     "unit": "M",
-    "price": "0.64",
-    "note": "305M/RL",
+    "price": "0.918",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-16A",
-    "name": "PVC-3高壓套管 300V  16AWG 1.35mm",
+    "name": "PVC-3高壓套管 300V 16AWG 1.34mm",
     "unit": "M",
-    "price": "0.62",
-    "note": "305M/RL",
+    "price": "0.885",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-17A",
-    "name": "PVC-3高壓套管 300V  17AWG 1.19mm",
+    "name": "PVC-3高壓套管 300V 17AWG 1.19mm",
     "unit": "M",
-    "price": "0.57",
-    "note": "305M/RL",
+    "price": "0.820",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
     "code": "CFT-3-18A",
-    "name": "PVC-3高壓套管 300V  18AWG 1.07mm",
+    "name": "PVC-3高壓套管 300V 18AWG 1.07mm",
     "unit": "M",
-    "price": "0.55",
-    "note": "305M/RL",
+    "price": "0.787",
+    "note": "152.5M/RL",
+    "category": "PVC-3"
+  },
+  {
+    "code": "CFT-3-19A",
+    "name": "PVC-3高壓套管 300V 19AWG 0.96mm",
+    "unit": "M",
+    "price": "0.787",
+    "note": "152.5M/RL",
+    "category": "PVC-3"
+  },
+  {
+    "code": "CFT-3-20A",
+    "name": "PVC-3高壓套管 300V 20AWG 0.86mm",
+    "unit": "M",
+    "price": "0.754",
+    "note": "152.5M/RL",
     "category": "PVC-3"
   },
   {
