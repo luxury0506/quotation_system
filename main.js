@@ -110,27 +110,8 @@ nameInput.addEventListener("input", () => {
   const matched = allCustomers.find(c => c.name && c.name.includes(keyword));
   if (!matched) return;
 
-  // ➤ 自動帶入
-  if (contactInput) contactInput.value = matched.contactPerson || "";
-  if (phoneInput) phoneInput.value = matched.phone || "";
-  if (faxInput) faxInput.value = matched.fax || "";
-
-  if (invoiceAddrInput) invoiceAddrInput.value = matched.invoiceAddress || "";
-  if (companyAddrInput) companyAddrInput.value = matched.companyAddress || "";
-  if (shippingAddrInput) shippingAddrInput.value = matched.shippingAddress || "";
-
-  const previewMap = {
-    customerName: "previewCustomerName",
-    contactPerson: "previewContactPerson",
-    customerPhone: "previewCustomerPhone",
-    customerFax: "previewCustomerFax"
-  };
-
-  Object.entries(previewMap).forEach(([inputId, spanId]) => {
-    const input = document.getElementById(inputId);
-    const span = document.getElementById(spanId);
-    if (input && span) span.textContent = input.value || "-";
-  });
+  // ➤ 自動帶入（沿用 fillCustomerFields，避免重複邏輯 / 引用未宣告的變數）
+  fillCustomerFields(matched);
 });
 
 
@@ -334,10 +315,6 @@ function addSelectedProducts() {
 }
 
 
-  clearAllProducts();
-  updatePreviewProducts();
-
-
 function addCustomProduct() {
   addProductItem({
     code: "",
@@ -393,30 +370,6 @@ function addProductItem(p) {
   list.appendChild(row);
 }
 
-// 在 setupEventListeners 中修改 discountRate 的監聽
-const discount = document.getElementById("discountRate");
-if (discount) {
-  discount.addEventListener("input", () => {
-    const globalRate = parseFloat(discount.value || "1");
-    const rows = document.querySelectorAll("#productList .product-item");
-
-    rows.forEach(row => {
-      const discountInput = row.querySelector(".p-discount");
-      const priceInput = row.querySelector(".p-price");
-      const base = parseFloat(priceInput.dataset.basePrice);
-      
-      // 更新每一行的折數框
-      discountInput.value = globalRate;
-      
-      // 更新每一行的單價
-      if (!isNaN(base)) {
-        priceInput.value = (base * globalRate).toFixed(2);
-      }
-    });
-    updatePreviewProducts();
-  });
-}
-
 // =======================
 // 將目前已選產品同步到預覽表格
 // =======================
@@ -454,25 +407,6 @@ function updatePreviewProducts() {
   });
 }
 
-  rows.forEach(row => {
-    const code = row.querySelector(".p-code")?.value || "";
-    const name = row.querySelector(".p-name")?.value || "";
-    const unit = row.querySelector(".p-unit")?.value || "";
-    const price = row.querySelector(".p-price")?.value || "";
-    const note = row.querySelector(".p-note")?.value || "";
-
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${code || "&nbsp;"}</td>
-      <td>${name || "&nbsp;"}</td>
-      <td>${unit || "&nbsp;"}</td>
-      <td>${price ? applyDiscount(price) : "&nbsp;"}</td>
-      <td>${note || "&nbsp;"}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-
 // =======================
 // 表單欄位 ↔ 預覽區同步
 // =======================
@@ -493,11 +427,14 @@ function setupEventListeners() {
       const rows = document.querySelectorAll("#productList .product-item");
 
       rows.forEach(row => {
+        const discountInput = row.querySelector(".p-discount");
         const priceInput = row.querySelector(".p-price");
         const base = parseFloat(priceInput.dataset.basePrice);
-        
+
+        // 更新每一行的折數框，讓上方視覺保持同步
+        if (discountInput) discountInput.value = rate;
+
         if (!isNaN(base)) {
-          // 更新清單中的輸入框數值，讓上方視覺保持同步
           priceInput.value = (base * rate).toFixed(2);
         }
       });
@@ -593,9 +530,22 @@ function generatePDF() {
 
   const { jsPDF } = window.jspdf;
 
-  html2canvas(preview, { scale: 2 }).then(canvas => {
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
+  // scale 從 2 降到 1.5：畫面截圖解析度仍足夠列印清晰，但像素量少了約 44%
+  html2canvas(preview, {
+    scale: 1.5,
+    useCORS: true,
+    backgroundColor: "#ffffff"
+  }).then(canvas => {
+    // 用 JPEG（有損壓縮）取代 PNG（無損），這是檔案暴增的主因：
+    // 同一張截圖，PNG 常常是 JPEG 的 5~10 倍大，尤其這種大面積色塊+文字的版面
+    const imgData = canvas.toDataURL("image/jpeg", 0.85);
+
+    const pdf = new jsPDF({
+      orientation: "p",
+      unit: "mm",
+      format: "a4",
+      compress: true // 開啟 jsPDF 內部的 PDF 資料流壓縮
+    });
 
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -605,7 +555,7 @@ function generatePDF() {
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     if (imgHeight <= pageHeight - margin * 2) {
-      pdf.addImage(imgData, "PNG", margin, margin, imgWidth, imgHeight);
+      pdf.addImage(imgData, "JPEG", margin, margin, imgWidth, imgHeight);
     } else {
       // 粗略多頁切分
       let position = 0;
@@ -615,7 +565,7 @@ function generatePDF() {
       while (heightLeft > 0) {
         if (page > 1) pdf.addPage();
         const y = margin - position;
-        pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
+        pdf.addImage(imgData, "JPEG", margin, y, imgWidth, imgHeight);
         heightLeft -= pageHeight - margin * 2;
         position += pageHeight - margin * 2;
         page++;
@@ -631,4 +581,85 @@ function generatePDF() {
 // =======================
 function printQuotation() {
   window.print();
+}
+
+// =======================
+// 產生 WORD（.docx）
+// 走「真實 HTML/文字」路線，而不是像 PDF 那樣截圖，
+// 所以檔案很小、文字可以被選取/搜尋，圖片也用 base64 內嵌避免路徑失效
+// =======================
+async function toDataUrl(url) {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (e) {
+    console.warn("圖片轉換為 base64 失敗，WORD 檔中該圖片可能無法顯示：", url, e);
+    return null;
+  }
+}
+
+async function generateWord() {
+  const preview = document.getElementById("quotationPreview");
+  if (!preview) return;
+
+  // 複製一份，避免動到畫面上實際顯示的內容
+  const clone = preview.cloneNode(true);
+
+  // LOGO 用相對路徑（fig/logo.png），docx 檔案脫離網頁環境後這種相對路徑會失效，
+  // 所以在匯出前先轉成 base64 內嵌進去
+  const img = clone.querySelector(".company-logo");
+  if (img) {
+    const dataUrl = await toDataUrl(img.getAttribute("src"));
+    if (dataUrl) img.setAttribute("src", dataUrl);
+  }
+
+  // Word 不會讀取外部 style.css，必要的樣式要內嵌在 <style> 裡
+  const styles = `
+    <style>
+      body { font-family: "Microsoft JhengHei", Arial, sans-serif; }
+      .company-header { text-align: center; margin-bottom: 20px; }
+      .company-logo { width: 90px; }
+      .company-title h1 { font-size: 24pt; letter-spacing: 6px; margin: 0; }
+      .company-title h2 { font-size: 18pt; margin: 6px 0 0 0; }
+      table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+      td, th { border: 1px solid #ddd; padding: 6px 10px; }
+      .product-table th { background: #2c3e50; color: #ffffff; text-align: center; }
+      .product-table td { text-align: center; }
+      .info-table td { background: #f8f9fa; }
+      .terms { margin-top: 20px; }
+      .terms h3 { margin-bottom: 8px; }
+      .terms ul { list-style: none; padding-left: 0; }
+      .terms li { margin-bottom: 6px; }
+      .company-contact { text-align: center; margin-top: 12px; color: #555; }
+    </style>
+  `;
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+      <head><meta charset="utf-8">${styles}</head>
+      <body>${clone.innerHTML}</body>
+    </html>
+  `;
+
+  if (!window.htmlDocx) {
+    alert("WORD 匯出套件尚未載入，請確認網路連線與 CDN script 是否正確引入。");
+    return;
+  }
+
+  const converted = window.htmlDocx.asBlob(htmlContent);
+  const url = URL.createObjectURL(converted);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "quotation.docx";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }

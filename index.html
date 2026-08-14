@@ -11,6 +11,9 @@
     <!-- PDF 相關套件（跟原本一樣用 CDN） -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- WORD (.docx) 匯出套件 -->
+    <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.js"></script>
 </head>
 <body>
     <div class="container">
@@ -272,6 +275,7 @@
             <!-- 操作按鈕 -->
             <div class="actions">
                 <button type="button" class="btn btn-success" onclick="generatePDF()">📄 產生 PDF 報價單</button>
+                <button type="button" class="btn btn-primary" onclick="generateWord()">📝 產生 WORD 報價單</button>
                 <button type="button" class="btn btn-primary" onclick="loadPresetData()">📝 載入範例資料</button>
             </div>
         </div>
