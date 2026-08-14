@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>資料管理工具｜產品 / 客戶</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height:100vh; padding:20px;
+  }
+  .container { max-width:1200px; margin:0 auto; background:#fff; border-radius:20px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.1); overflow:hidden; }
+  .header { background:linear-gradient(135deg,#2c3e50 0%,#3498db 100%); color:#fff; padding:24px 30px; }
+  .header h1 { font-size:1.8em; margin-bottom:4px; }
+  .header p { opacity:0.85; font-size:0.9em; }
+
+  .tabs { display:flex; border-bottom:2px solid #eee; background:#f8f9fa; }
+  .tab-btn { flex:1; padding:14px; border:none; background:none; cursor:pointer; font-size:15px;
+    font-weight:bold; color:#777; border-bottom:3px solid transparent; }
+  .tab-btn.active { color:#2c3e50; border-bottom-color:#3498db; background:#fff; }
+
+  .panel { display:none; padding:24px 30px; }
+  .panel.active { display:block; }
+
+  .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px; }
+  .toolbar input[type="text"] { flex:1; min-width:200px; padding:10px; border:2px solid #e0e0e0;
+    border-radius:8px; font-size:14px; }
+  .toolbar input[type="file"] { font-size:13px; }
+
+  .btn { padding:10px 18px; border:none; border-radius:8px; cursor:pointer; font-size:13px;
+    font-weight:bold; transition:.2s; white-space:nowrap; }
+  .btn-primary { background:linear-gradient(135deg,#3498db,#2980b9); color:#fff; }
+  .btn-success { background:linear-gradient(135deg,#27ae60,#229954); color:#fff; }
+  .btn-danger  { background:linear-gradient(135deg,#e74c3c,#c0392b); color:#fff; padding:6px 10px; font-size:12px; }
+  .btn-gray    { background:#95a5a6; color:#fff; }
+  .btn:hover   { transform:translateY(-1px); box-shadow:0 4px 10px rgba(0,0,0,0.15); }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .status-line { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;
+    font-size:13px; color:#666; }
+  .status-line .unsaved { color:#e74c3c; font-weight:bold; }
+
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  thead th { background:#2c3e50; color:#fff; padding:10px 8px; text-align:left; position:sticky; top:0; }
+  tbody td { padding:8px; border-bottom:1px solid #eee; vertical-align:top; }
+  tbody tr:hover { background:#f5f9fc; }
+  .table-wrap { max-height:460px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:8px; }
+  .empty-row td { text-align:center; color:#999; padding:30px; }
+
+  .form-panel { display:none; background:#f8f9fa; border:2px solid #3498db; border-radius:10px;
+    padding:20px; margin-bottom:18px; }
+  .form-panel.active { display:block; }
+  .form-panel h3 { margin-bottom:14px; color:#2c3e50; }
+  .form-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; margin-bottom:14px; }
+  .field label { display:block; font-size:12px; color:#555; font-weight:bold; margin-bottom:4px; }
+  .field input, .field select { width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:13px; }
+  .form-actions { display:flex; gap:10px; }
+
+  .hint { font-size:12px; color:#888; margin-top:6px; }
+  .note-box { background:#fff8e1; border-left:4px solid #f5a623; padding:12px 16px; border-radius:6px;
+    font-size:13px; color:#7a5c00; margin-bottom:18px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🗂️ 資料管理工具</h1>
+    <p>用表單新增／修改／刪除產品與客戶資料，最後匯出成 JSON 直接取代原本的 products.json / customers.json</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="products" onclick="switchTab('products')">📦 產品管理</button>
+    <button class="tab-btn" data-tab="customers" onclick="switchTab('customers')">🏢 客戶管理</button>
+  </div>
+
+  <!-- ============ 產品管理 ============ -->
+  <div class="panel active" id="panel-products">
+    <div class="note-box">
+      載入現有的 <code>products.json</code>，編輯完成後記得按「⬇️ 匯出 products.json」，
+      再把下載到的檔案覆蓋原本報價系統資料夾裡的 <code>products.json</code>。
+    </div>
+
+    <div class="toolbar">
+      <input type="file" id="productsFile" accept=".json" onchange="loadFile('products', this.files[0])">
+      <input type="text" id="productSearch" placeholder="🔍 搜尋編號或名稱..." oninput="renderTable('products')">
+      <button class="btn btn-success" onclick="openForm('products')">➕ 新增產品</button>
+      <button class="btn btn-primary" onclick="exportData('products')">⬇️ 匯出 products.json</button>
+    </div>
+
+    <div class="status-line">
+      <span id="productsCount">尚未載入資料</span>
+      <span id="productsUnsaved"></span>
+    </div>
+
+    <div class="form-panel" id="form-products">
+      <h3 id="formTitle-products">新增產品</h3>
+      <div class="form-grid">
+        <div class="field"><label>產品編號</label><input id="p-code" placeholder="例：CFT-3-0A"></div>
+        <div class="field"><label>品名規格</label><input id="p-name" placeholder="例：PVC高壓套管 300V 0AWG"></div>
+        <div class="field"><label>單位</label><input id="p-unit" placeholder="例：M"></div>
+        <div class="field"><label>單價</label><input id="p-price" placeholder="例：3.934"></div>
+        <div class="field">
+          <label>分類</label>
+          <select id="p-category">
+            <option value="PVC-3">PVC-3</option>
+            <option value="PVC-6">PVC-6</option>
+            <option value="PVC-3AC">PVC-3AC</option>
+            <option value="PVC-6AC">PVC-6AC</option>
+            <option value="FSG-2">FSG-2</option>
+            <option value="FSG-3">FSG-3</option>
+            <option value="HST">HST</option>
+            <option value="SRG-4">SRG-4</option>
+            <option value="SRG-7">SRG-7</option>
+            <option value="H">H</option>
+            <option value="HCB">HCB</option>
+            <option value="HC">HC</option>
+            <option value="GS">GS</option>
+            <option value="AIS">AIS</option>
+            <option value="AISC">AISC</option>
+            <option value="PET">PET</option>
+          </select>
+        </div>
+        <div class="field"><label>備註</label><input id="p-note" placeholder="例：152.5M/RL"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-success" onclick="saveForm('products')">💾 儲存</button>
+        <button class="btn btn-gray" onclick="closeForm('products')">取消</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>編號</th><th>品名規格</th><th>單位</th><th>單價</th><th>分類</th><th>備註</th><th>操作</th></tr>
+        </thead>
+        <tbody id="tbody-products"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ 客戶管理 ============ -->
+  <div class="panel" id="panel-customers">
+    <div class="note-box">
+      載入現有的 <code>customers.json</code>，編輯完成後記得按「⬇️ 匯出 customers.json」，
+      再把下載到的檔案覆蓋原本報價系統資料夾裡的 <code>customers.json</code>。
+    </div>
+
+    <div class="toolbar">
+      <input type="file" id="customersFile" accept=".json" onchange="loadFile('customers', this.files[0])">
+      <input type="text" id="customerSearch" placeholder="🔍 搜尋名稱、電話或統編..." oninput="renderTable('customers')">
+      <button class="btn btn-success" onclick="openForm('customers')">➕ 新增客戶</button>
+      <button class="btn btn-primary" onclick="exportData('customers')">⬇️ 匯出 customers.json</button>
+    </div>
+
+    <div class="status-line">
+      <span id="customersCount">尚未載入資料</span>
+      <span id="customersUnsaved"></span>
+    </div>
+
+    <div class="form-panel" id="form-customers">
+      <h3 id="formTitle-customers">新增客戶</h3>
+      <div class="form-grid">
+        <div class="field"><label>客戶編號</label><input id="c-code" placeholder="例：TC001"></div>
+        <div class="field"><label>客戶名稱</label><input id="c-name" placeholder="例：明鼎工業社"></div>
+        <div class="field"><label>電話</label><input id="c-phone" placeholder="例：04-26397763"></div>
+        <div class="field"><label>傳真</label><input id="c-fax"></div>
+        <div class="field"><label>聯絡人</label><input id="c-contactPerson"></div>
+        <div class="field"><label>統一編號</label><input id="c-taxId"></div>
+        <div class="field"><label>業務</label><input id="c-sales"></div>
+        <div class="field"><label>客戶類型</label><input id="c-customerType"></div>
+        <div class="field"><label>地區</label><input id="c-region" placeholder="例：TC"></div>
+        <div class="field"><label>最後交易日</label><input id="c-lastTransaction" placeholder="例：2025-01-01"></div>
+        <div class="field"><label>發票地址</label><input id="c-invoiceAddress"></div>
+        <div class="field"><label>公司地址</label><input id="c-companyAddress"></div>
+        <div class="field"><label>送貨地址</label><input id="c-shippingAddress"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-success" onclick="saveForm('customers')">💾 儲存</button>
+        <button class="btn btn-gray" onclick="closeForm('customers')">取消</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>編號</th><th>名稱</th><th>電話</th><th>聯絡人</th><th>統編</th><th>業務</th><th>地區</th><th>操作</th></tr>
+        </thead>
+        <tbody id="tbody-customers"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// =======================
+// 狀態
+// =======================
+const state = {
+  products: { data: [], editingIndex: null, dirty: false },
+  customers: { data: [], editingIndex: null, dirty: false }
+};
+
+const PRODUCT_FIELDS  = ["code","name","unit","price","category","note"];
+const CUSTOMER_FIELDS = ["code","name","phone","fax","contactPerson","taxId","sales",
+                          "customerType","lastTransaction","invoiceAddress","companyAddress",
+                          "shippingAddress","region"];
+
+// =======================
+// 本機自動備份（localStorage），避免忘記匯出就關掉分頁而白做工
+// =======================
+function backup(type) {
+  try {
+    localStorage.setItem("data-manager:" + type, JSON.stringify(state[type].data));
+  } catch (e) { /* 容量不足或不支援就略過，不影響主要功能 */ }
+}
+
+function tryRestoreBackup(type) {
+  try {
+    const raw = localStorage.getItem("data-manager:" + type);
+    if (!raw) return;
+    const backupData = JSON.parse(raw);
+    if (!Array.isArray(backupData) || !backupData.length) return;
+    if (state[type].data.length) return; // 已經有載入資料就不干擾
+    const label = type === "products" ? "產品" : "客戶";
+    if (confirm(`偵測到上次未匯出的${label}編輯紀錄（共 ${backupData.length} 筆），要還原嗎？`)) {
+      state[type].data = backupData;
+      state[type].dirty = true;
+      renderTable(type);
+    }
+  } catch (e) { /* 忽略壞掉的備份 */ }
+}
+
+// =======================
+// 分頁切換
+// =======================
+function switchTab(tab) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.getElementById("panel-" + tab).classList.add("active");
+}
+
+// =======================
+// 載入 JSON 檔案
+// =======================
+function loadFile(type, file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!Array.isArray(parsed)) throw new Error("JSON 內容必須是一個陣列");
+      state[type].data = parsed;
+      state[type].dirty = false;
+      renderTable(type);
+    } catch (err) {
+      alert("讀取失敗，檔案內容不是合法的 JSON 陣列：\n" + err.message);
+    }
+  };
+  reader.readAsText(file, "utf-8");
+}
+
+// =======================
+// 表格渲染
+// =======================
+function getFiltered(type) {
+  const kwId = type === "products" ? "productSearch" : "customerSearch";
+  const kw = (document.getElementById(kwId).value || "").trim().toLowerCase();
+  if (!kw) return state[type].data.map((item, idx) => ({ item, idx }));
+
+  return state[type].data
+    .map((item, idx) => ({ item, idx }))
+    .filter(({ item }) => {
+      if (type === "products") {
+        return (item.code || "").toLowerCase().includes(kw) ||
+               (item.name || "").toLowerCase().includes(kw);
+      }
+      return (item.name || "").toLowerCase().includes(kw) ||
+             (item.phone || "").toLowerCase().includes(kw) ||
+             (item.taxId || "").toLowerCase().includes(kw);
+    });
+}
+
+function renderTable(type) {
+  const tbody = document.getElementById("tbody-" + type);
+  const rows = getFiltered(type);
+  const countEl = document.getElementById(type + "Count");
+  const unsavedEl = document.getElementById(type + "Unsaved");
+
+  countEl.textContent = state[type].data.length
+    ? `共 ${state[type].data.length} 筆，目前顯示 ${rows.length} 筆`
+    : "尚未載入資料（可用上方「選擇檔案」載入現有 JSON，或直接按「新增」開始建立）";
+
+  unsavedEl.innerHTML = state[type].dirty
+    ? `<span class="unsaved">● 有未匯出的變更</span>` : "";
+
+  if (!rows.length) {
+    const colspan = type === "products" ? 7 : 8;
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="${colspan}">目前沒有資料</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(({ item, idx }) => {
+    if (type === "products") {
+      return `<tr>
+        <td>${esc(item.code)}</td>
+        <td>${esc(item.name)}</td>
+        <td>${esc(item.unit)}</td>
+        <td>${esc(item.price)}</td>
+        <td>${esc(item.category)}</td>
+        <td>${esc(item.note)}</td>
+        <td>
+          <button class="btn btn-primary" style="padding:6px 10px;font-size:12px" onclick="openForm('products', ${idx})">✏️</button>
+          <button class="btn btn-danger" onclick="deleteItem('products', ${idx})">🗑</button>
+        </td>
+      </tr>`;
+    }
+    return `<tr>
+      <td>${esc(item.code)}</td>
+      <td>${esc(item.name)}</td>
+      <td>${esc(item.phone)}</td>
+      <td>${esc(item.contactPerson)}</td>
+      <td>${esc(item.taxId)}</td>
+      <td>${esc(item.sales)}</td>
+      <td>${esc(item.region)}</td>
+      <td>
+        <button class="btn btn-primary" style="padding:6px 10px;font-size:12px" onclick="openForm('customers', ${idx})">✏️</button>
+        <button class="btn btn-danger" onclick="deleteItem('customers', ${idx})">🗑</button>
+      </td>
+    </tr>`;
+  }).join("");
+}
+
+function esc(v) {
+  if (v === null || v === undefined) return "";
+  return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+// =======================
+// 新增／編輯表單
+// =======================
+function fieldPrefix(type) { return type === "products" ? "p-" : "c-"; }
+function fieldList(type) { return type === "products" ? PRODUCT_FIELDS : CUSTOMER_FIELDS; }
+
+function openForm(type, idx) {
+  state[type].editingIndex = (idx === undefined) ? null : idx;
+  const prefix = fieldPrefix(type);
+  const fields = fieldList(type);
+  const item = (idx !== undefined) ? state[type].data[idx] : {};
+
+  fields.forEach(f => {
+    const el = document.getElementById(prefix + f);
+    if (el) el.value = item[f] ?? "";
+  });
+
+  document.getElementById("formTitle-" + type).textContent =
+    (idx !== undefined) ? "編輯" + (type === "products" ? "產品" : "客戶") : "新增" + (type === "products" ? "產品" : "客戶");
+
+  document.getElementById("form-" + type).classList.add("active");
+}
+
+function closeForm(type) {
+  state[type].editingIndex = null;
+  document.getElementById("form-" + type).classList.remove("active");
+}
+
+function saveForm(type) {
+  const prefix = fieldPrefix(type);
+  const fields = fieldList(type);
+  const record = {};
+  fields.forEach(f => {
+    const el = document.getElementById(prefix + f);
+    record[f] = el ? (el.value.trim() || null) : null;
+  });
+
+  if (!record.code || !record.name) {
+    alert("編號與名稱為必填欄位");
+    return;
+  }
+
+  const idx = state[type].editingIndex;
+  const dupIdx = state[type].data.findIndex((it, i) => it.code === record.code && i !== idx);
+  if (dupIdx !== -1) {
+    if (!confirm(`編號「${record.code}」已存在，確定要建立重複編號嗎？`)) return;
+  }
+
+  if (idx === null || idx === undefined) {
+    state[type].data.push(record);
+  } else {
+    state[type].data[idx] = record;
+  }
+
+  state[type].dirty = true;
+  backup(type);
+  closeForm(type);
+  renderTable(type);
+}
+
+function deleteItem(type, idx) {
+  const item = state[type].data[idx];
+  if (!confirm(`確定要刪除「${item.name || item.code}」嗎？此動作只影響目前畫面上的資料，記得刪完要重新匯出。`)) return;
+  state[type].data.splice(idx, 1);
+  state[type].dirty = true;
+  backup(type);
+  renderTable(type);
+}
+
+// =======================
+// 匯出 JSON
+// =======================
+function exportData(type) {
+  if (!state[type].data.length) {
+    alert("目前沒有資料可以匯出");
+    return;
+  }
+  const filename = type === "products" ? "products.json" : "customers.json";
+  const blob = new Blob([JSON.stringify(state[type].data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  state[type].dirty = false;
+  renderTable(type);
+}
+
+// =======================
+// 初始化：嘗試自動載入同資料夾的 JSON（若是用本機伺服器開啟才會成功；
+// 直接雙擊開檔的話瀏覽器會擋，這時用上方「選擇檔案」手動載入即可）
+// =======================
+window.addEventListener("DOMContentLoaded", () => {
+  ["products", "customers"].forEach(type => {
+    fetch(type + ".json")
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => {
+        if (Array.isArray(data) && !state[type].data.length) {
+          state[type].data = data;
+          renderTable(type);
+        }
+      })
+      .catch(() => { tryRestoreBackup(type); renderTable(type); });
+  });
+});
+</script>
+</body>
+</html>
